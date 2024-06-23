@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import TaskCard from "./TaskCard"
-import TaskContext, { draggedTaskInterface } from "../context/context";
-import { boardInterface } from "../App";
+import TaskContext from "../context/context";
+import { actionInterface } from "../reducers/boardReducer";
 
 interface CustomElements extends HTMLFormControlsCollection {
     task: HTMLInputElement
@@ -12,47 +12,25 @@ interface CustomForm extends HTMLFormElement {
 }
 
 interface Props {
-    children?: React.ReactNode,
     title: string,
     className?: string,
-    board: boardInterface,
-    tasks: string[],
-    setBoard: React.Dispatch<React.SetStateAction<boardInterface>>
+    tasks: string[]
+    boardDispatch: React.Dispatch<actionInterface>
 }
 
+
 const List: React.FC<Props> =
-    ({ className, title, tasks, board, setBoard }) => {
+    ({ className, title, tasks, boardDispatch }) => {
         const [listTitle, setListTitle] = useState<string>(title)
         const [addingTask, setAddingTask] = useState<boolean>(false);
         const { draggedTask } = useContext(TaskContext)
-
-        const taskAdder = (board: boardInterface, newTask: string) => {
-            const lists = board.lists
-            lists.forEach(l => l.title === title ? l.tasks = [...l.tasks, newTask] : {})
-            return { ...board, lists }
-        }
-
-        const taskAdderNew = (board: boardInterface, draggedTask: draggedTaskInterface) => {
-            const lists = board.lists
-            lists.forEach(l => {
-                if (l.title === title) {
-                    const dragOverItemIndex = l.tasks.indexOf(draggedTask.dragOverItem.task)
-                    if (draggedTask.list === draggedTask.dragOverItem.list) {
-                        const currentItemIndex = l.tasks.indexOf(draggedTask.task)
-                        l.tasks.splice(currentItemIndex, 1)
-                    }
-                    l.tasks.splice(dragOverItemIndex, 0, draggedTask.task)
-                }
-            })
-            return { ...board, lists }
-        }
 
         const handleClick = () => setAddingTask(true)
 
         const handleTaskAdd = (e: React.FormEvent<CustomForm>) => {
             e.preventDefault()
             const newTask = e.currentTarget.task.value;
-            if (newTask) setBoard(taskAdder(board, newTask))
+            if (newTask) boardDispatch({ type: "addTask", payload: { currentListTitle: title, newTask } })
             setAddingTask(false)
         }
 
@@ -63,29 +41,21 @@ const List: React.FC<Props> =
         const handleDrop = (e: React.DragEvent) => {
             e.preventDefault()
             if (draggedTask)
-                if (draggedTask.list !== title) {
-                    if (draggedTask.list !== draggedTask.dragOverItem.list)
-                        setBoard(taskAdderNew(board, draggedTask))
-                }
-                else
-                    setBoard(taskAdderNew(board, draggedTask))
+                boardDispatch({ type: "moveTask", payload: { currentListTitle: title, draggedTask } })
         }
 
         const handleFormDrop = (e: React.DragEvent) => {
             e.preventDefault()
-
-            if (draggedTask) {
-                setBoard(taskAdder(board, draggedTask.task))
-            }
+            if (draggedTask)
+                boardDispatch({ type: "addTask", payload: { currentListTitle: title, draggedTask } })
         }
 
         const handleDragEnd = () => {
             // Remove Task from old list
             if (draggedTask && draggedTask.list !== draggedTask.dragOverItem.list)
-                setBoard(prevBoard => {
-                    const lists = prevBoard.lists
-                    lists.forEach(l => l.title === title ? l.tasks = l.tasks.filter(t => t != draggedTask.task) : {})
-                    return { ...prevBoard, lists }
+                boardDispatch({
+                    type: "removeTask",
+                    payload: { currentListTitle: title, draggedTask: draggedTask }
                 })
         }
 

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import List from "./components/List";
 import TaskContext, { draggedTaskInterface } from "./context/context";
+import boardReducer from "./reducers/boardReducer";
 
 export interface boardInterface {
   lists: {
@@ -28,13 +29,19 @@ const App = () => {
   // const [arr1, setArr1] = useState<string[]>(["Helo", "Test"])
   // const [arr2, setArr2] = useState<string[]>([])
 
-  const [board, setBoard] = useState<boardInterface>(b)
+  const [board, dispatch] = useReducer(boardReducer, b)
 
   return (
     <TaskContext.Provider value={{ draggedTask, setDraggedTask }}>
       <div className="p-10 flex board">
         {
-          board.lists.map((list, i) => <List key={i} title={list.title} tasks={list.tasks} board={board} setBoard={setBoard} />)
+          board.lists.map((list, i) =>
+            <List
+              key={i}
+              title={list.title}
+              tasks={list.tasks}
+              boardDispatch={dispatch}
+            />)
         }
       </div>
     </TaskContext.Provider>
