@@ -2,11 +2,12 @@ import { draggedTaskInterface } from "../context/context"
 import { boardInterface } from "../App"
 
 export interface actionInterface {
-    type: "addTask" | "moveTask" | "removeTask",
+    type: "addTask" | "changeBoard" | "moveTask" | "removeTask",
     payload: {
         draggedTask?: draggedTaskInterface,
         newTask?: string,
-        currentListTitle: string
+        currentListTitle?: string
+        board?: boardInterface
     }
 }
 
@@ -14,14 +15,20 @@ export default function reducer(state: boardInterface, action: actionInterface) 
     const payload = action.payload
     const draggedTask = payload.draggedTask
     let lists = []
-    if (action.type === "addTask") {
-        const newTask = payload.newTask
-        lists = state.lists
-        if (newTask)
-            lists.forEach(l => l.title === payload.currentListTitle ? l.tasks = [...l.tasks, newTask] : {})
-        if (draggedTask)
-            lists.forEach(l => l.title === payload.currentListTitle ? l.tasks = [...l.tasks, draggedTask.task] : {})
-        return { ...state, lists }
+    switch (action.type) {
+        case "addTask":
+            const newTask = payload.newTask
+            lists = state.lists
+            if (newTask)
+                lists.forEach(l => l.title === payload.currentListTitle ? l.tasks = [...l.tasks, newTask] : {})
+            if (draggedTask)
+                lists.forEach(l => l.title === payload.currentListTitle ? l.tasks = [...l.tasks, draggedTask.task] : {})
+            return { ...state, lists }
+        case "changeBoard":
+            const newBoard = payload.board
+            if (newBoard)
+                return newBoard
+            return state
     }
     if (draggedTask)
         switch (action.type) {

@@ -21,7 +21,7 @@ interface Props {
 
 const List: React.FC<Props> =
     ({ className, title, tasks, boardDispatch }) => {
-        const [listTitle, setListTitle] = useState<string>(title)
+        // const [listTitle, setListTitle] = useState<string>(title)
         const [addingTask, setAddingTask] = useState<boolean>(false);
         const { draggedTask } = useContext(TaskContext)
 
@@ -69,7 +69,7 @@ const List: React.FC<Props> =
                 className={"list shrink-0 w-64 px-3 py-1 bg-black text-gray-300 rounded-xl h-fit " + className}
             >
                 <div className="flex px-3 py-3 items-center justify-between">
-                    <form onSubmit={(e) => {
+                    {/* <form onSubmit={(e) => {
                         e.preventDefault()
                     }}>
                         <input
@@ -78,7 +78,8 @@ const List: React.FC<Props> =
                             onChange={(e) => setListTitle(e.target.value)}
                         />
                         <input type="submit" hidden />
-                    </form>
+                    </form> */}
+                    {title}
                     <span>...</span>
                 </div>
                 <ul className="card-list list-none">
