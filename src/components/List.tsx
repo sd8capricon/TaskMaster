@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import TaskCard from "./TaskCard"
-import TaskContext from "../context/context";
+import TaskContext, { draggedTaskInterface } from "../context/context";
+import { boardInterface } from "../App";
 
 interface CustomElements extends HTMLFormControlsCollection {
     task: HTMLInputElement
@@ -12,24 +13,46 @@ interface CustomForm extends HTMLFormElement {
 
 interface Props {
     children?: React.ReactNode,
+    title: string,
     className?: string,
+    board: boardInterface,
     tasks: string[],
-    setTasks: React.Dispatch<React.SetStateAction<string[]>>
+    setBoard: React.Dispatch<React.SetStateAction<boardInterface>>
 }
 
 const List: React.FC<Props> =
-    ({ className, tasks, setTasks }) => {
-        const [listTitle, setListTitle] = useState<string>("List Title")
+    ({ className, title, tasks, board, setBoard }) => {
+        const [listTitle, setListTitle] = useState<string>(title)
         const [addingTask, setAddingTask] = useState<boolean>(false);
         const { draggedTask } = useContext(TaskContext)
+
+        const taskAdder = (board: boardInterface, newTask: string) => {
+            const lists = board.lists
+            lists.forEach(l => l.title === title ? l.tasks = [...l.tasks, newTask] : {})
+            return { ...board, lists }
+        }
+
+        const taskAdderNew = (board: boardInterface, draggedTask: draggedTaskInterface) => {
+            const lists = board.lists
+            lists.forEach(l => {
+                if (l.title === title) {
+                    const dragOverItemIndex = l.tasks.indexOf(draggedTask.dragOverItem.task)
+                    if (draggedTask.list === draggedTask.dragOverItem.list) {
+                        const currentItemIndex = l.tasks.indexOf(draggedTask.task)
+                        l.tasks.splice(currentItemIndex, 1)
+                    }
+                    l.tasks.splice(dragOverItemIndex, 0, draggedTask.task)
+                }
+            })
+            return { ...board, lists }
+        }
 
         const handleClick = () => setAddingTask(true)
 
         const handleTaskAdd = (e: React.FormEvent<CustomForm>) => {
             e.preventDefault()
-            const target = e.currentTarget;
-            if (target.task.value)
-                setTasks([...tasks, target.task.value])
+            const newTask = e.currentTarget.task.value;
+            if (newTask) setBoard(taskAdder(board, newTask))
             setAddingTask(false)
         }
 
@@ -39,15 +62,31 @@ const List: React.FC<Props> =
 
         const handleDrop = (e: React.DragEvent) => {
             e.preventDefault()
-            if (draggedTask) setTasks([...tasks, draggedTask])
-            // const newTask = e.dataTransfer.getData("task")
-            // setTasks([...tasks, newTask])
+            if (draggedTask)
+                if (draggedTask.list !== title) {
+                    if (draggedTask.list !== draggedTask.dragOverItem.list)
+                        setBoard(taskAdderNew(board, draggedTask))
+                }
+                else
+                    setBoard(taskAdderNew(board, draggedTask))
+        }
+
+        const handleFormDrop = (e: React.DragEvent) => {
+            e.preventDefault()
+
+            if (draggedTask) {
+                setBoard(taskAdder(board, draggedTask.task))
+            }
         }
 
         const handleDragEnd = () => {
-            // const task = e.dataTransfer.getData("task")
-            // setTasks(tasks => tasks.filter(t => t != task))
-            setTasks(tasks => tasks.filter(t => t != draggedTask))
+            // Remove Task from old list
+            if (draggedTask && draggedTask.list !== draggedTask.dragOverItem.list)
+                setBoard(prevBoard => {
+                    const lists = prevBoard.lists
+                    lists.forEach(l => l.title === title ? l.tasks = l.tasks.filter(t => t != draggedTask.task) : {})
+                    return { ...prevBoard, lists }
+                })
         }
 
         return (
@@ -71,7 +110,7 @@ const List: React.FC<Props> =
                     <span>...</span>
                 </div>
                 <ul className="card-list list-none">
-                    {tasks.map((num, i) => <TaskCard key={i} task={num} />)}
+                    {tasks.map((t, i) => <TaskCard key={i} task={t} list={title} />)}
                 </ul>
                 {addingTask ?
                     <form onSubmit={handleTaskAdd} className="py-1 mb-3 w-full">
@@ -87,7 +126,11 @@ const List: React.FC<Props> =
                         </div>
                     </form>
                     :
-                    <button className="px-3 py-1 mb-3 w-full text-left rounded-lg hover:bg-gray-800" onClick={handleClick}>
+                    <button
+                        onClick={handleClick}
+                        onDrop={handleFormDrop}
+                        className="px-3 py-1 mb-3 w-full text-left rounded-lg hover:bg-gray-800"
+                    >
                         <span className="mr-1">+</span> Add a card
                     </button>
                 }
