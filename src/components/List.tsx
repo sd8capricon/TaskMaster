@@ -46,8 +46,10 @@ const List: React.FC<Props> =
 
         const handleFormDrop = (e: React.DragEvent) => {
             e.preventDefault()
-            if (draggedTask)
+            if (draggedTask) {
                 boardDispatch({ type: "addTask", payload: { currentListTitle: title, draggedTask } })
+                boardDispatch({ type: "removeTask", payload: { currentListTitle: draggedTask.list, draggedTask } })
+            }
         }
 
         const handleDragEnd = () => {
