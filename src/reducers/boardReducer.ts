@@ -16,18 +16,16 @@ export default function reducer(state: boardInterface, action: actionInterface) 
     let lists = []
     if (action.type === "addTask") {
         const newTask = payload.newTask
-        if (newTask) {
-            lists = state.lists
+        lists = state.lists
+        if (newTask)
             lists.forEach(l => l.title === payload.currentListTitle ? l.tasks = [...l.tasks, newTask] : {})
-            return { ...state, lists }
-
-        }
+        if (draggedTask)
+            lists.forEach(l => l.title === payload.currentListTitle ? l.tasks = [...l.tasks, draggedTask.task] : {})
+        return { ...state, lists }
     }
     if (draggedTask)
         switch (action.type) {
             case "moveTask":
-                console.log(draggedTask);
-
                 lists = state.lists
                 lists.forEach(l => {
                     if (l.title === payload.currentListTitle) {
