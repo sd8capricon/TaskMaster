@@ -1,54 +1,14 @@
 import { useReducer, useState } from "react";
 import List from "./components/List";
-import TaskContext, { draggedTaskInterface } from "./context/context";
+import TaskContext from "./context/context";
 import boardReducer from "./reducers/boardReducer";
+import boards from "./fakeDB";
 
-export interface boardInterface {
-  title: string,
-  lists: {
-    title: string,
-    tasks: string[]
-  }[]
-}
 
-const b1: boardInterface = {
-  title: "B1",
-  lists: [
-    {
-      title: "To Do",
-      tasks: ["Helo", "Test", "Man"]
-    },
-    {
-      title: "Doing",
-      tasks: ["Bye", "Hehehe"]
-    }
-  ]
-}
+const App: React.FC<{}> = () => {
 
-const b2: boardInterface = {
-  title: "B2",
-  lists: [
-    {
-      title: "Yello",
-      tasks: ["Get", "Some", "Milk"]
-    },
-    {
-      title: "Tello",
-      tasks: ["how", "are"]
-    },
-    {
-      title: "Bello",
-      tasks: ["I'm", "boy"]
-    }
-  ]
-}
-
-const boards = [b1, b2]
-
-const App = () => {
-
-  const [draggedTask, setDraggedTask] = useState<draggedTaskInterface>({ task: "", list: "", dragOverItem: { task: "", list: "" } });
-  const [board, dispatch] = useReducer(boardReducer, b1)
+  const [draggedTask, setDraggedTask] = useState<draggedTask>({ task: "", list: "", dragOverItem: { task: "", list: "" } });
+  const [board, dispatch] = useReducer(boardReducer, boards[0])
 
   return (
     <div>

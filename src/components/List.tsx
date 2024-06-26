@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import TaskCard from "./TaskCard"
 import TaskContext from "../context/context";
-import { actionInterface } from "../reducers/boardReducer";
 
 interface CustomElements extends HTMLFormControlsCollection {
     task: HTMLInputElement
@@ -15,13 +14,12 @@ interface Props {
     title: string,
     className?: string,
     tasks: string[]
-    boardDispatch: React.Dispatch<actionInterface>
+    boardDispatch: React.Dispatch<boardAction>
 }
 
 
 const List: React.FC<Props> =
     ({ className, title, tasks, boardDispatch }) => {
-        // const [listTitle, setListTitle] = useState<string>(title)
         const [addingTask, setAddingTask] = useState<boolean>(false);
         const { draggedTask } = useContext(TaskContext)
 

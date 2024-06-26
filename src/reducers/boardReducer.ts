@@ -1,17 +1,4 @@
-import { draggedTaskInterface } from "../context/context"
-import { boardInterface } from "../App"
-
-export interface actionInterface {
-    type: "addTask" | "changeBoard" | "moveTask" | "removeTask",
-    payload: {
-        draggedTask?: draggedTaskInterface,
-        newTask?: string,
-        currentListTitle?: string
-        board?: boardInterface
-    }
-}
-
-export default function reducer(state: boardInterface, action: actionInterface) {
+export default function reducer(state: board, action: boardAction) {
     const payload = action.payload
     const draggedTask = payload.draggedTask
     let lists = []
