@@ -1,9 +1,11 @@
+type boardList = {
+    title: string,
+    tasks: string[]
+}
+
 type board = {
     title: string,
-    lists: {
-        title: string,
-        tasks: string[]
-    }[]
+    lists: boardList[]
 }
 
 type draggedTask = {
@@ -16,7 +18,7 @@ type draggedTask = {
 }
 
 type boardAction = {
-    type: "addTask" | "changeBoard" | "moveTask" | "removeTask",
+    type: "addTask" | "changeBoard" | "moveTask" | "removeTask" | "newList",
     payload: {
         draggedTask?: draggedTask,
         newTask?: string,

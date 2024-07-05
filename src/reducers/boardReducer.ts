@@ -16,6 +16,16 @@ export default function reducer(state: board, action: boardAction) {
             if (newBoard)
                 return newBoard
             return state
+        case "newList":
+            const currentTitle = payload.currentListTitle
+            if (currentTitle) {
+                const newList: boardList = { title: currentTitle, tasks: [] }
+                const newState = { ...state, lists: [...state.lists, newList] }
+                console.log(newState);
+
+                return newState
+            }
+            return { ...state }
     }
     if (draggedTask)
         switch (action.type) {
