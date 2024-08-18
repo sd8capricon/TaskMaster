@@ -1,25 +1,19 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import AppDataSource from "../db";
 import Board from "../models/board";
 
-const router = Router()
 const boardRepository = AppDataSource.getRepository(Board)
 
-router.get("/", async (req: Request, res: Response) => {
+export const getAllBoards = async (req: Request, res: Response) => {
     try {
         const boards = await boardRepository.find()
         res.json(boards)
     } catch (error) {
         res.status(200).json({ error })
     }
-})
-router.route("/:id").all((req: Request, res: Response, next: NextFunction) => {
-    const boardId = Number(req.params.id)
-    if (Number.isNaN(boardId))
-        return res.status(400).json({ error: "Request parameter should be a number" })
-    req.body.boardId = boardId
-    next()
-}).get(async (req: Request, res: Response) => {
+}
+
+export const getBoardWithTasks = async (req: Request, res: Response) => {
     // get board by id
     const boardId = req.body.boardId
     try {
@@ -29,7 +23,9 @@ router.route("/:id").all((req: Request, res: Response, next: NextFunction) => {
     } catch (error) {
         res.status(500).json({ error })
     }
-}).delete(async (req: Request, res: Response) => {
+}
+
+export const deleteBoard = async (req: Request, res: Response) => {
     const boardId = req.body.boardId
     try {
         const delRes = await boardRepository.delete({ id: boardId })
@@ -37,10 +33,10 @@ router.route("/:id").all((req: Request, res: Response, next: NextFunction) => {
     } catch (error) {
         res.status(500).json({ error })
     }
-})
+}
 
-router.post("/", async (req: Request, res: Response) => {
-    const body = req.body
+export const createBoard = async (req: Request, res: Response) => {
+    const body = req.body.board
     const board = new Board()
     board.name = body.name
     try {
@@ -50,6 +46,16 @@ router.post("/", async (req: Request, res: Response) => {
     catch (error) {
         res.status(500).json({ error })
     }
-})
+}
 
-export default router
+export const updateBoardName = async (req: Request, res: Response) => {
+    const body = req.body.board
+    const boardId = body.id
+    const newBoadName = body.name
+    try {
+        const boardRes = await boardRepository.update({ id: boardId }, { name: newBoadName })
+        res.status(200).json(boardRes)
+    } catch (error) {
+        res.status(500).json({ error })
+    }
+}

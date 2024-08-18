@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan'
 import AppDataSource from './db';
-import boardRoutes from './controllers/boardController';
+import boardRoutes from "./routes/boardRoutes"
 
 const app = express();
 app.use(express.json())
