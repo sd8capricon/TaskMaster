@@ -12,4 +12,6 @@ const SQLiteDataSource = new DataSource({
     subscribers: []
 })
 
-export default SQLiteDataSource
+const AppDataSource = SQLiteDataSource
+
+export default AppDataSource
