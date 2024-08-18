@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { checkBoardIdParamNaN } from "../middlewares/boardMiddleware";
+import { checkIdParamNaN } from "../middlewares";
 import { getAllBoards, createBoard, updateBoardName, getBoardWithTasks, deleteBoard } from "../controllers/boardController"
 
-const router = Router();
+const router = Router()
 
 router.route("/")
     .get(getAllBoards)
@@ -10,7 +10,7 @@ router.route("/")
     .put(updateBoardName)
 
 router.route("/:id")
-    .all(checkBoardIdParamNaN)
+    .all(checkIdParamNaN)
     .get(getBoardWithTasks)
     .delete(deleteBoard)
 

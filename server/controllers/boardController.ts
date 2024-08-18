@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import AppDataSource from "../db";
 import Board from "../models/board";
 
@@ -15,7 +15,7 @@ export const getAllBoards = async (req: Request, res: Response) => {
 
 export const getBoardWithTasks = async (req: Request, res: Response) => {
     // get board by id
-    const boardId = req.body.boardId
+    const boardId = req.body.searchId
     try {
         const board = await boardRepository.findOne({ relations: { tasks: true }, where: { id: boardId } })
         // if null then board doesnt exist
@@ -26,7 +26,7 @@ export const getBoardWithTasks = async (req: Request, res: Response) => {
 }
 
 export const deleteBoard = async (req: Request, res: Response) => {
-    const boardId = req.body.boardId
+    const boardId = req.body.searchId
     try {
         const delRes = await boardRepository.delete({ id: boardId })
         res.status(200).json({ result: delRes })
