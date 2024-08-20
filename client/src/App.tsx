@@ -45,7 +45,7 @@ interface TaskLayout {
 const App: React.FC<{}> = () => {
 
   // const [draggedTask, setDraggedTask] = useState<draggedTask>({ task: "", list: "", dragOverItem: { task: "", list: "" } });
-  const [draggedTask, setDraggedTask] = useState<DraggedTask>({ id: 0, name: "", order: 0, status: "backlog" });
+  const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
   const [board, dispatch] = useReducer(boardReducer, boards[0])
   const [tasks, setTasks] = useState<TaskLayout>({ backlog: [], todo: [], in_progress: [], completed: [] })
 
@@ -76,7 +76,19 @@ const App: React.FC<{}> = () => {
                 <>
                   <NewList
                     className="mr-10"
+                    title="backlog"
+                    tasks={tasks}
+                    setTasks={setTasks}
+                  />
+                  <NewList
+                    className="mr-10"
                     title="todo"
+                    tasks={tasks}
+                    setTasks={setTasks}
+                  />
+                  <NewList
+                    className="mr-10"
+                    title="in_progress"
                     tasks={tasks}
                     setTasks={setTasks}
                   />
@@ -88,24 +100,6 @@ const App: React.FC<{}> = () => {
                   />
                 </>
               }
-              {/* <List
-                className="mr-10"
-                title="Backlog"
-                tasks={board.lists[0].tasks}
-                boardDispatch={dispatch}
-              />
-              {
-                board.lists.map((list, i) =>
-                  <List
-                    className="mr-10"
-                    key={i}
-                    title={list.title}
-                    tasks={list.tasks}
-                    boardDispatch={dispatch}
-                  />
-                )
-              }
-              <button onClick={() => dispatch({ type: "newList", payload: { currentListTitle: "Hello" } })}> Add New List</button> */}
             </TaskContext.Provider >
           </div>
         </div>

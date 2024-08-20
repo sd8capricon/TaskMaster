@@ -1,4 +1,4 @@
-type Status = 'backlog' | 'todo' | 'in_progess' | 'completed'
+type Status = 'backlog' | 'todo' | 'in_progress' | 'completed'
 
 type Task = {
     id: number,
@@ -11,9 +11,6 @@ type Board = {
     id: number,
     name: string,
     tasks: Task[]
-}
-
-interface DraggedTask extends Task {
 }
 
 type boardList = {

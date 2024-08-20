@@ -2,8 +2,8 @@ import { createContext } from "react";
 
 
 interface draggedTaskContextInterface {
-    draggedTask?: DraggedTask
-    setDraggedTask?: React.Dispatch<React.SetStateAction<DraggedTask>>
+    draggedTask?: Task
+    setDraggedTask?: React.Dispatch<React.SetStateAction<Task>>
 }
 const TaskContext = createContext<draggedTaskContextInterface>({})
 
