@@ -10,11 +10,14 @@ interface TaskLayout {
 }
 
 interface Props {
-    title: string,
+    title: Status,
     className?: string,
     tasks: TaskLayout,
     setTasks: React.Dispatch<React.SetStateAction<TaskLayout>>
 }
+
+// Reset List Order
+const resetOrder = (t: Task, i: number) => ({ ...t, order: i })
 
 const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
@@ -25,26 +28,34 @@ const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
         }
     }
 
-    const handleDrop = (droppedTask: Task, newStatus: string) => {
-        if (!droppedTask) return
+    const handleDrop = (droppedTask: Task | null, newStatus: Status) => {
+        // if (!droppedTask) return
 
         if (!draggedTask) return
 
         // Move Task
         const newTasks = { ...tasks }
-        const droppedTaskIndex = newTasks[newStatus].indexOf(droppedTask)
-
-        // Reset List Order
-        const resetOrder = (t: Task, i: number) => ({ ...t, order: i })
 
         // Remove element from old status list and Reset 
         const oldStatus = draggedTask.status
         newTasks[oldStatus] = newTasks[draggedTask.status]
             .filter(t => t.id != draggedTask.id)
             .map(resetOrder)
+
         // Add element in new status list
+        // Determine where to insert the dragged task in the new status list
+        // const droppedTaskIndex = newTasks[newStatus].indexOf(droppedTask)
+        const droppedTaskIndex = droppedTask
+            ? newTasks[newStatus].indexOf(droppedTask)
+            : -1; // If droppedTask is null, the list is empty
+
+        // newTasks[newStatus] = [
+        //     ...newTasks[newStatus].slice(0, droppedTaskIndex),
+        //     { ...draggedTask, status: newStatus },
+        //     ...newTasks[newStatus].slice(droppedTaskIndex),
+        // ].map(resetOrder);
         newTasks[newStatus]
-            .splice(droppedTaskIndex + 1, 0, { ...draggedTask, status: droppedTask.status })
+            .splice(droppedTaskIndex + 1, 0, { ...draggedTask, status: newStatus })
             .map(resetOrder)
 
         setTasks(newTasks)
@@ -65,6 +76,16 @@ const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
                         onDrop={() => handleDrop(t, title)}
                         className="card py-1.5 px-3 bg-gray-800 rounded-lg mb-2">
                         {t.name}
+                    </li>
+                )}
+
+                {tasks[title].length === 0 && (
+                    <li
+                        className="empty-dropzone"
+                        onDrop={() => handleDrop(null, title)}
+                        onDragOver={(e) => e.preventDefault()}
+                    >
+                        Drop here
                     </li>
                 )}
             </ul>
