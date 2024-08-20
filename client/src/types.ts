@@ -1,3 +1,21 @@
+type Status = 'backlog' | 'todo' | 'in_progess' | 'completed'
+
+type Task = {
+    id: number,
+    name: string,
+    order: number,
+    status: Status
+}
+
+type Board = {
+    id: number,
+    name: string,
+    tasks: Task[]
+}
+
+interface DraggedTask extends Task {
+}
+
 type boardList = {
     title: string,
     tasks: string[]
