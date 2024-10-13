@@ -25,7 +25,7 @@ const taskReducer = (state: TaskLayout, action: taskAction): TaskLayout => {
 
             const { draggedTask, droppedTask, newStatus } = action.payload;
 
-            let newTasks = { ...state };
+            let newTasks = structuredClone(state);
 
             // Remove the dragged task from the old status list and reset order
             const oldStatus = draggedTask.status;
