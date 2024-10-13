@@ -1,4 +1,5 @@
-const resetOrder = (t: Task, i: number) => ({ ...t, order: i })
+// utils
+import { resetOrder } from "../utils/taskUtils";
 
 const taskReducer = (state: TaskLayout, action: taskAction): TaskLayout => {
     switch (action.type) {

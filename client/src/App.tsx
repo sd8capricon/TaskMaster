@@ -1,39 +1,19 @@
 import { useEffect, useReducer, useState } from "react";
+
+// Components
 import Sidebar from "./components/Sidebar";
-// import List from "./components/List";
-import NewList from "./components/NewList"
+import List from "./components/List"
 import TaskContext from "./context/context";
 import Navbar from "./components/Navbar";
 
+// Reducers
 import taskReducer from "./reducers/taskReducer";
 
-const b: Board = {
-  id: 1,
-  name: "yello",
-  tasks: [
-    {
-      id: 3,
-      name: "Get eggs",
-      order: 1,
-      status: "todo"
-    },
-    {
-      id: 15,
-      name: "Boo",
-      order: 0,
-      status: "todo"
-    },
-    {
-      id: 4,
-      name: "run",
-      order: 0,
-      status: "completed"
-    }
-  ]
-}
+// utils
+import { sortTaskAscending } from "./utils/taskUtils";
 
-const sortTaskAscending = (a: Task, b: Task) => a.order - b.order
-
+// fakeDB
+import { b } from "./fakeDB"
 
 
 const App: React.FC<{}> = () => {
@@ -41,7 +21,6 @@ const App: React.FC<{}> = () => {
   const initialTask: TaskLayout = { backlog: [], todo: [], in_progress: [], completed: [] }
 
   const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
-  // const [tasks, setTasks] = useState<TaskLayout>({ backlog: [], todo: [], in_progress: [], completed: [] })
   const [tasks, taskDispatch] = useReducer(taskReducer, initialTask)
 
   useEffect(() => {
@@ -69,25 +48,25 @@ const App: React.FC<{}> = () => {
             <TaskContext.Provider value={{ draggedTask, setDraggedTask }}>
               {
                 <>
-                  <NewList
+                  <List
                     className="mr-10"
                     title="backlog"
                     tasks={tasks}
                     taskDispatch={taskDispatch}
                   />
-                  <NewList
+                  <List
                     className="mr-10"
                     title="todo"
                     tasks={tasks}
                     taskDispatch={taskDispatch}
                   />
-                  <NewList
+                  <List
                     className="mr-10"
                     title="in_progress"
                     tasks={tasks}
                     taskDispatch={taskDispatch}
                   />
-                  <NewList
+                  <List
                     className="mr-10"
                     title="completed"
                     tasks={tasks}

@@ -1,35 +1,24 @@
-const b1: board = {
-    title: "B1",
-    lists: [
+export const b: Board = {
+    id: 1,
+    name: "yello",
+    tasks: [
         {
-            title: "To Do",
-            tasks: ["Helo", "Test", "Man"]
+            id: 3,
+            name: "Get eggs",
+            order: 1,
+            status: "todo"
         },
         {
-            title: "Doing",
-            tasks: ["Bye", "Hehehe"]
+            id: 15,
+            name: "Boo",
+            order: 0,
+            status: "todo"
+        },
+        {
+            id: 4,
+            name: "run",
+            order: 0,
+            status: "completed"
         }
     ]
 }
-
-const b2: board = {
-    title: "B2",
-    lists: [
-        {
-            title: "Yello",
-            tasks: ["Get", "Some", "Milk"]
-        },
-        {
-            title: "Tello",
-            tasks: ["how", "are"]
-        },
-        {
-            title: "Bello",
-            tasks: ["I'm", "boy"]
-        }
-    ]
-}
-
-const boards = [b1, b2]
-
-export default boards
