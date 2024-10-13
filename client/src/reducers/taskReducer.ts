@@ -15,6 +15,21 @@ const taskReducer = (state: TaskLayout, action: taskAction): TaskLayout => {
             return newTasks;
         }
 
+        case 'ADD_STATUS': {
+            const { status } = action.payload;
+
+            const newTasks = { ...state }
+
+            if (!newTasks[status]) {
+                return {
+                    ...newTasks,
+                    [status]: []
+                };
+            }
+
+            return newTasks;
+        }
+
 
         case "SET_TASKS": {
             return action.payload

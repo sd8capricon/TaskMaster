@@ -18,16 +18,20 @@ import { b } from "./fakeDB"
 
 const App: React.FC<{}> = () => {
 
-  const statuses: Status[] = ["backlog", "todo", "in_progress", "completed"]
-  const initialTask: TaskLayout = { backlog: [], todo: [], in_progress: [], completed: [] }
-
-  const [tasks, taskDispatch] = useReducer(taskReducer, initialTask)
+  const [statuses, setStatuses] = useState<Status[]>(["backlog", "todo", "in_progress", "completed"])
+  const [tasks, taskDispatch] = useReducer(taskReducer, { backlog: [], todo: [], in_progress: [], completed: [] })
   const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
 
   useEffect(() => {
     const newTasks: TaskLayout = { backlog: [], todo: [], in_progress: [], completed: [] }
     // get task list from server
     for (let status of statuses) {
+
+      // create status key if it doesn't exist
+      if (!newTasks[status]) {
+        newTasks[status] = [];
+      }
+
       newTasks[status].push(
         ...b.tasks.filter(t => t.status === status)
           .sort(sortTaskAscending)
@@ -35,6 +39,12 @@ const App: React.FC<{}> = () => {
     }
     taskDispatch({ type: "SET_TASKS", payload: newTasks })
   }, [])
+
+  const addNewStatusList = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setStatuses([...statuses, "Foo"])
+    taskDispatch({ type: "ADD_STATUS", payload: { status: "Foo" } })
+  }
 
 
   return (
@@ -57,6 +67,7 @@ const App: React.FC<{}> = () => {
                       tasks={tasks}
                       taskDispatch={taskDispatch} />
                   )}
+                  <button onClick={addNewStatusList}>Create New List</button>
                 </>
               }
             </TaskContext.Provider >
