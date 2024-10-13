@@ -1,6 +1,13 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import TaskContext from "../context/context"
 
+interface CustomElements extends HTMLFormControlsCollection {
+    task: HTMLInputElement
+}
+
+interface CustomForm extends HTMLFormElement {
+    elements: CustomElements
+}
 
 interface Props {
     title: Status,
@@ -11,12 +18,23 @@ interface Props {
 
 
 const List: React.FC<Props> = ({ className, title, tasks, taskDispatch }) => {
+    const [addingTask, setAddingTask] = useState<boolean>(false);
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
 
     const handleDragStart = (task: Task) => {
         if (setDraggedTask) {
             setDraggedTask(task)
         }
+    }
+
+    const handleClick = () => setAddingTask(true)
+
+    const handleTaskAdd = (e: React.FormEvent<CustomForm>) => {
+        e.preventDefault()
+        const task_value = e.currentTarget.task.value;
+        const newTask = { id: -1, name: task_value, order: tasks[title].length, status: title }
+        if (newTask) taskDispatch({ type: "ADD_TASK", payload: { task: newTask } })
+        setAddingTask(false)
     }
 
     const handleDrop = (droppedTask: Task | null, newStatus: Status) => {
@@ -58,6 +76,30 @@ const List: React.FC<Props> = ({ className, title, tasks, taskDispatch }) => {
                     </li>
                 )}
             </ul>
+
+            {addingTask ?
+                <form onSubmit={handleTaskAdd} className="py-1 mb-3 w-full">
+                    <input
+                        className="px-3 pt-1.5 pb-6 mb-3 w-full bg-gray-800 rounded-lg"
+                        type="text"
+                        name="task"
+                        placeholder="Enter a title for this task"
+                    />
+                    <div className="flex">
+                        <button type="submit" className="px-3 py-1 mr-4 bg-sky-800 text-white rounded-sm">Add</button>
+                        <button onClick={() => setAddingTask(false)}>x</button>
+                    </div>
+                </form>
+                :
+                <button
+                    onClick={handleClick}
+                    onDrop={() => handleDrop(null, title)}
+                    onDragOver={(e) => e.preventDefault()}
+                    className="px-3 py-1 mb-3 w-full text-left rounded-lg hover:bg-gray-800"
+                >
+                    <span className="mr-1">+</span> Add a card
+                </button>
+            }
         </div>
     )
 }

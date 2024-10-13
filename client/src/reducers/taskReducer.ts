@@ -2,6 +2,19 @@ const resetOrder = (t: Task, i: number) => ({ ...t, order: i })
 
 const taskReducer = (state: TaskLayout, action: taskAction): TaskLayout => {
     switch (action.type) {
+        case "ADD_TASK": {
+            const { task } = action.payload;
+
+            // Add the new task to the specified status and reset the order
+            const newTasks = {
+                ...state,
+                [task.status]: [...state[task.status], { ...task }] // Push task and set its order
+            };
+
+            return newTasks;
+        }
+
+
         case "SET_TASKS": {
             return action.payload
         }
