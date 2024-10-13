@@ -7,6 +7,14 @@ type Task = {
     status: Status
 }
 
+interface TaskLayout {
+    [key: string]: Task[],
+    backlog: Task[],
+    todo: Task[]
+    in_progress: Task[]
+    completed: Task[]
+}
+
 type Board = {
     id: number,
     name: string,
@@ -31,6 +39,12 @@ type draggedTask = {
         list: string
     }
 }
+
+type taskAction =
+    | { type: 'DROP_TASK', payload: { draggedTask: Task, droppedTask: Task | null, newStatus: Status } }
+    | { type: 'REMOVE_TASK', payload: { taskId: number, status: Status } }
+    | { type: 'SET_TASKS', payload: TaskLayout }
+
 
 type boardAction = {
     type: "addTask" | "changeBoard" | "moveTask" | "removeTask" | "newList",

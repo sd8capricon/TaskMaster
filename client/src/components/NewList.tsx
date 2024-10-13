@@ -1,25 +1,16 @@
 import { useContext } from "react"
 import TaskContext from "../context/context"
 
-interface TaskLayout {
-    [key: string]: Task[],
-    backlog: Task[],
-    todo: Task[]
-    in_progress: Task[]
-    completed: Task[]
-}
 
 interface Props {
     title: Status,
     className?: string,
     tasks: TaskLayout,
-    setTasks: React.Dispatch<React.SetStateAction<TaskLayout>>
+    taskDispatch: React.Dispatch<taskAction>
 }
 
-// Reset List Order
-const resetOrder = (t: Task, i: number) => ({ ...t, order: i })
 
-const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
+const List: React.FC<Props> = ({ className, title, tasks, taskDispatch }) => {
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
 
     const handleDragStart = (task: Task) => {
@@ -32,27 +23,11 @@ const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
 
         if (!draggedTask) return
 
-        // Move Task
-        const newTasks = { ...tasks }
-
-        // Remove element from old status list and Reset 
-        const oldStatus = draggedTask.status
-        newTasks[oldStatus] = newTasks[draggedTask.status]
-            .filter(t => t.id != draggedTask.id)
-            .map(resetOrder)
-
-        // Add element in new status list
-
-        // Determine where to insert the dragged task in the new status list
-        const droppedTaskIndex = droppedTask
-            ? newTasks[newStatus].findIndex(t => t.id === droppedTask.id)
-            : newTasks[newStatus].length;  // If droppedTask is null, the list is empty
-
-        newTasks[newStatus]
-            .splice(droppedTaskIndex + 1, 0, { ...draggedTask, status: newStatus })
-            .map(resetOrder)
-
-        setTasks(newTasks)
+        // Dispatch action to the reducer
+        taskDispatch({
+            type: 'DROP_TASK',
+            payload: { draggedTask, droppedTask, newStatus }
+        });
     }
 
     return (
