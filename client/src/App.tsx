@@ -18,15 +18,16 @@ import { b } from "./fakeDB"
 
 const App: React.FC<{}> = () => {
 
+  const statuses: Status[] = ["backlog", "todo", "in_progress", "completed"]
   const initialTask: TaskLayout = { backlog: [], todo: [], in_progress: [], completed: [] }
 
-  const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
   const [tasks, taskDispatch] = useReducer(taskReducer, initialTask)
+  const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
 
   useEffect(() => {
     const newTasks: TaskLayout = { backlog: [], todo: [], in_progress: [], completed: [] }
     // get task list from server
-    for (let status in newTasks) {
+    for (let status of statuses) {
       newTasks[status].push(
         ...b.tasks.filter(t => t.status === status)
           .sort(sortTaskAscending)
@@ -48,30 +49,14 @@ const App: React.FC<{}> = () => {
             <TaskContext.Provider value={{ draggedTask, setDraggedTask }}>
               {
                 <>
-                  <List
-                    className="mr-10"
-                    title="backlog"
-                    tasks={tasks}
-                    taskDispatch={taskDispatch}
-                  />
-                  <List
-                    className="mr-10"
-                    title="todo"
-                    tasks={tasks}
-                    taskDispatch={taskDispatch}
-                  />
-                  <List
-                    className="mr-10"
-                    title="in_progress"
-                    tasks={tasks}
-                    taskDispatch={taskDispatch}
-                  />
-                  <List
-                    className="mr-10"
-                    title="completed"
-                    tasks={tasks}
-                    taskDispatch={taskDispatch}
-                  />
+                  {statuses.map((status, key) =>
+                    <List
+                      key={key}
+                      className="mr-10"
+                      title={status}
+                      tasks={tasks}
+                      taskDispatch={taskDispatch} />
+                  )}
                 </>
               }
             </TaskContext.Provider >
