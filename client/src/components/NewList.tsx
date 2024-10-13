@@ -29,7 +29,6 @@ const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
     }
 
     const handleDrop = (droppedTask: Task | null, newStatus: Status) => {
-        // if (!droppedTask) return
 
         if (!draggedTask) return
 
@@ -43,17 +42,12 @@ const List: React.FC<Props> = ({ className, title, tasks, setTasks }) => {
             .map(resetOrder)
 
         // Add element in new status list
-        // Determine where to insert the dragged task in the new status list
-        // const droppedTaskIndex = newTasks[newStatus].indexOf(droppedTask)
-        const droppedTaskIndex = droppedTask
-            ? newTasks[newStatus].indexOf(droppedTask)
-            : -1; // If droppedTask is null, the list is empty
 
-        // newTasks[newStatus] = [
-        //     ...newTasks[newStatus].slice(0, droppedTaskIndex),
-        //     { ...draggedTask, status: newStatus },
-        //     ...newTasks[newStatus].slice(droppedTaskIndex),
-        // ].map(resetOrder);
+        // Determine where to insert the dragged task in the new status list
+        const droppedTaskIndex = droppedTask
+            ? newTasks[newStatus].findIndex(t => t.id === droppedTask.id)
+            : newTasks[newStatus].length;  // If droppedTask is null, the list is empty
+
         newTasks[newStatus]
             .splice(droppedTaskIndex + 1, 0, { ...draggedTask, status: newStatus })
             .map(resetOrder)
