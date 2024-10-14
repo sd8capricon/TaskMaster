@@ -37,8 +37,6 @@ const taskReducer = (state: TaskLayout, action: TaskAction): TaskLayout => {
 
         case "DROP_TASK": {
 
-            console.log("run");
-
             const { draggedTask, droppedTask, newStatus } = action.payload;
 
             let newTasks = structuredClone(state);
