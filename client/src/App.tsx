@@ -3,11 +3,14 @@ import { useReducer, useState } from "react";
 // Components
 import Sidebar from "./components/Sidebar";
 import List from "./components/List"
-import TaskContext from "./context/context";
 import Navbar from "./components/Navbar";
 
 // Reducers
 import taskReducer from "./reducers/taskReducer";
+
+// Context
+import TaskDispatchContext from "./context/taskDispatchContext";
+import DraggedTaskContext from "./context/draggedTaskContext";
 
 // Hooks
 import useBoard from "./hooks/useBoard";
@@ -47,21 +50,22 @@ const App: React.FC<{}> = () => {
         <div className="bg-emerald-700 flex-grow">
           <h1 className="pl-12 bg-white opacity-50 text-4xl">{boardName}</h1>
           <div className="px-10 py-4 flex items-start board">
-            <TaskContext.Provider value={{ draggedTask, setDraggedTask }}>
-              {
-                <>
-                  {boardOverview.boardStatusLists.map((status, key) =>
-                    <List
-                      key={key}
-                      className="mr-10"
-                      title={status}
-                      tasks={tasks}
-                      taskDispatch={taskDispatch} />
-                  )}
-                  <button onClick={addNewStatusList}>Create New List</button>
-                </>
-              }
-            </TaskContext.Provider >
+            <TaskDispatchContext.Provider value={taskDispatch}>
+              <DraggedTaskContext.Provider value={{ draggedTask, setDraggedTask }}>
+                {
+                  <>
+                    {boardOverview.boardStatusLists.map((status, key) =>
+                      <List
+                        key={key}
+                        className="mr-10"
+                        title={status}
+                        tasks={tasks} />
+                    )}
+                    <button onClick={addNewStatusList}>Create New List</button>
+                  </>
+                }
+              </DraggedTaskContext.Provider >
+            </TaskDispatchContext.Provider>
           </div>
         </div>
       </div>

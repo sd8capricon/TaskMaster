@@ -1,5 +1,8 @@
 import { useContext, useState } from "react"
-import TaskContext from "../context/context"
+
+// contexts
+import TaskDispatchContext from "../context/taskDispatchContext"
+import TaskContext from "../context/draggedTaskContext"
 
 interface CustomElements extends HTMLFormControlsCollection {
     task: HTMLInputElement
@@ -12,13 +15,13 @@ interface CustomForm extends HTMLFormElement {
 interface Props {
     title: Status,
     className?: string,
-    tasks: TaskLayout,
-    taskDispatch: React.Dispatch<TaskAction>
+    tasks: TaskLayout
 }
 
 
-const List: React.FC<Props> = ({ className, title, tasks, taskDispatch }) => {
+const List: React.FC<Props> = ({ className, title, tasks }) => {
     const [addingTask, setAddingTask] = useState<boolean>(false);
+    const taskDispatch = useContext(TaskDispatchContext)
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
 
     const handleDragStart = (task: Task) => {
@@ -33,7 +36,7 @@ const List: React.FC<Props> = ({ className, title, tasks, taskDispatch }) => {
         e.preventDefault()
         const task_value = e.currentTarget.task.value;
         const newTask = { id: -1, name: task_value, order: tasks[title].length, status: title }
-        if (newTask) taskDispatch({ type: "ADD_TASK", payload: { task: newTask } })
+        if (newTask) taskDispatch!({ type: "ADD_TASK", payload: { task: newTask } })
         setAddingTask(false)
     }
 
@@ -42,7 +45,7 @@ const List: React.FC<Props> = ({ className, title, tasks, taskDispatch }) => {
         if (!draggedTask) return
 
         // Dispatch action to the reducer
-        taskDispatch({
+        taskDispatch!({
             type: 'DROP_TASK',
             payload: { draggedTask, droppedTask, newStatus }
         });

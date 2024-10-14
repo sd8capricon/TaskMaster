@@ -5,6 +5,6 @@ interface draggedTaskContextInterface {
     draggedTask?: Task
     setDraggedTask?: React.Dispatch<React.SetStateAction<Task>>
 }
-const TaskContext = createContext<draggedTaskContextInterface>({})
+const DraggedTaskContext = createContext<draggedTaskContextInterface>({})
 
-export default TaskContext
+export default DraggedTaskContext
