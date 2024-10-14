@@ -8,11 +8,7 @@ type Task = {
 }
 
 interface TaskLayout {
-    [key: string]: Task[],
-    backlog: Task[],
-    todo: Task[]
-    in_progress: Task[]
-    completed: Task[]
+    [key: string]: Task[]
 }
 
 type Board = {

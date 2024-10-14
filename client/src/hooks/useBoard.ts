@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 // utils
 import { sortTaskAscending } from "../utils/taskUtils";
 
-const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, boardOverviewDispatch: React.Dispatch<BoardAction>) => {
+const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, setBoardOverview: React.Dispatch<React.SetStateAction<BoardOverview>>) => {
     // const board = await (await fetch(`http://localhost:3000/board/${id}`)).json()
 
     const [boardName, setBoardName] = useState<string>("");
@@ -35,7 +35,7 @@ const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, boardOve
                 }
                 setBoardName(board.name)
 
-                boardOverviewDispatch({ type: "SET_OVERVIEW", payload: { name: board.name, statuses: statuses } })
+                setBoardOverview({ boardName: board.name, boardStatusLists: statuses })
                 taskDispatch({ type: "SET_TASKS", payload: sortedTasks })
 
             } catch (err) {

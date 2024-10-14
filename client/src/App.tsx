@@ -8,7 +8,6 @@ import Navbar from "./components/Navbar";
 
 // Reducers
 import taskReducer from "./reducers/taskReducer";
-import boardReducer from "./reducers/boardReducer";
 
 // Hooks
 import useBoard from "./hooks/useBoard";
@@ -16,20 +15,21 @@ import useBoard from "./hooks/useBoard";
 
 const App: React.FC<{}> = () => {
 
-  // State
+  // States
   const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
-  // Reducers
-  // This reducer could have been state as well but to learn reducer patterns its a reducer
-  const [boardOverview, boardOverviewDispatch] = useReducer(boardReducer, { boardName: "", boardStatusLists: ["backlog", "todo", "in_progress", "completed"] })
-  const [tasks, taskDispatch] = useReducer(taskReducer, { backlog: [], todo: [], in_progress: [], completed: [] })
+  const [boardOverview, setBoardOverview] = useState<BoardOverview>({ boardName: "", boardStatusLists: [] })
+  // Reducer
+  const [tasks, taskDispatch] = useReducer(taskReducer, {})
 
   // Fetch Data from server
-  const { boardName, loading, error } = useBoard(1, taskDispatch, boardOverviewDispatch)
+  const { boardName, loading, error } = useBoard(1, taskDispatch, setBoardOverview)
 
   // Function to add new status list
   const addNewStatusList = (e: React.MouseEvent) => {
     e.preventDefault()
-    boardOverviewDispatch({ type: "ADD_STATUS", paylod: "Foo" })
+    const newBoardOverview = { ...boardOverview }
+    newBoardOverview.boardStatusLists.push("Foo")
+    setBoardOverview(newBoardOverview)
     taskDispatch({ type: "ADD_STATUS", payload: { status: "Foo" } })
   }
 
