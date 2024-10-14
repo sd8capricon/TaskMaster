@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 
 // Components
 import Sidebar from "./components/Sidebar";
@@ -9,11 +9,8 @@ import Navbar from "./components/Navbar";
 // Reducers
 import taskReducer from "./reducers/taskReducer";
 
-// utils
-import { sortTaskAscending } from "./utils/taskUtils";
-
-// fakeDB
-import { b } from "./fakeDB"
+// Hooks
+import useBoard from "./hooks/useBoard";
 
 
 const App: React.FC<{}> = () => {
@@ -22,29 +19,16 @@ const App: React.FC<{}> = () => {
   const [tasks, taskDispatch] = useReducer(taskReducer, { backlog: [], todo: [], in_progress: [], completed: [] })
   const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
 
-  useEffect(() => {
-    const newTasks: TaskLayout = { backlog: [], todo: [], in_progress: [], completed: [] }
-    // get task list from server
-    for (let status of statuses) {
-
-      // create status key if it doesn't exist
-      if (!newTasks[status]) {
-        newTasks[status] = [];
-      }
-
-      newTasks[status].push(
-        ...b.tasks.filter(t => t.status === status)
-          .sort(sortTaskAscending)
-      )
-    }
-    taskDispatch({ type: "SET_TASKS", payload: newTasks })
-  }, [])
+  const { boardName, loading, error } = useBoard(1, taskDispatch)
 
   const addNewStatusList = (e: React.MouseEvent) => {
     e.preventDefault()
     setStatuses([...statuses, "Foo"])
     taskDispatch({ type: "ADD_STATUS", payload: { status: "Foo" } })
   }
+
+  if (loading) return <>Loading</>
+  if (error) return <>Some Error</>
 
 
   return (
@@ -54,7 +38,7 @@ const App: React.FC<{}> = () => {
       <div className="flex h-full">
         <Sidebar />
         <div className="bg-emerald-700 flex-grow">
-          <h1 className="pl-12 bg-white opacity-50 text-4xl">Test</h1>
+          <h1 className="pl-12 bg-white opacity-50 text-4xl">{boardName}</h1>
           <div className="px-10 py-4 flex items-start board">
             <TaskContext.Provider value={{ draggedTask, setDraggedTask }}>
               {

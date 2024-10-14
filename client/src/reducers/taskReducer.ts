@@ -1,7 +1,7 @@
 // utils
 import { resetOrder } from "../utils/taskUtils";
 
-const taskReducer = (state: TaskLayout, action: taskAction): TaskLayout => {
+const taskReducer = (state: TaskLayout, action: TaskAction): TaskLayout => {
     switch (action.type) {
         case "ADD_TASK": {
             const { task } = action.payload;

@@ -13,7 +13,7 @@ interface Props {
     title: Status,
     className?: string,
     tasks: TaskLayout,
-    taskDispatch: React.Dispatch<taskAction>
+    taskDispatch: React.Dispatch<TaskAction>
 }
 
 
