@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { sortTaskAscending } from "../utils/taskUtils";
 
 const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, setBoardOverview: React.Dispatch<React.SetStateAction<BoardOverview>>) => {
-    // const board = await (await fetch(`http://localhost:3000/board/${id}`)).json()
 
     const [boardName, setBoardName] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);

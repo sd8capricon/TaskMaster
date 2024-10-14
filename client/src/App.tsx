@@ -19,13 +19,14 @@ import useBoard from "./hooks/useBoard";
 const App: React.FC<{}> = () => {
 
   // States
+  const [boardId, setBoarId] = useState(1)
   const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
   const [boardOverview, setBoardOverview] = useState<BoardOverview>({ boardName: "", boardStatusLists: [] })
   // Reducer
   const [tasks, taskDispatch] = useReducer(taskReducer, {})
 
   // Fetch Data from server
-  const { boardName, loading, error } = useBoard(1, taskDispatch, setBoardOverview)
+  const { boardName, loading, error } = useBoard(boardId, taskDispatch, setBoardOverview)
 
   // Function to add new status list
   const addNewStatusList = (e: React.MouseEvent) => {
@@ -67,6 +68,8 @@ const App: React.FC<{}> = () => {
               </DraggedTaskContext.Provider >
             </TaskDispatchContext.Provider>
           </div>
+          {/* Check Changing Boards */}
+          <button onClick={() => setBoarId(boardId + 1)}>try change Board</button>
         </div>
       </div>
     </div >
