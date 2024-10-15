@@ -17,6 +17,12 @@ type Board = {
     tasks: Task[]
 }
 
+type BoardState = {
+    name: string,
+    tasks: TaskLayout,
+    updateTasks: Task[]
+}
+
 type BoardAction =
     { type: 'DROP_TASK', payload: { draggedTask: Task, droppedTask: Task | null, newStatus: Status } }
     | { type: 'REMOVE_TASK', payload: { taskId: number, status: Status } }

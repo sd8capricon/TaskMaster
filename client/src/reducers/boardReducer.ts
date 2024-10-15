@@ -1,13 +1,8 @@
 // utils
 import { resetOrder, sortTaskAscending } from "../utils/taskUtils";
 
-interface stateInterface {
-    name: string,
-    tasks: TaskLayout,
-    updateTasks: Task[]
-}
 
-const taskReducer = (state: stateInterface, action: TaskAction): stateInterface => {
+const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
     switch (action.type) {
         case "SET_BOARD": {
 
