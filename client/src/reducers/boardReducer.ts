@@ -1,23 +1,33 @@
 // utils
-import { resetOrder } from "../utils/taskUtils";
+import { resetOrder, sortTaskAscending } from "../utils/taskUtils";
 
 interface stateInterface {
+    name: string,
     tasks: TaskLayout,
     updateTasks: Task[]
 }
 
 const taskReducer = (state: stateInterface, action: TaskAction): stateInterface => {
     switch (action.type) {
-        case "ADD_TASK": {
-            const { task } = action.payload;
+        case "SET_BOARD": {
 
-            // Add the new task to the specified status and reset the order
-            const newTasks = {
-                ...state.tasks,
-                [task.status]: [...state.tasks[task.status], { ...task }] // Push task and set its order
-            };
+            const board = action.payload
 
-            return { tasks: newTasks, updateTasks: [task] };
+            const statuses = Array.from(new Set(board.tasks.map(task => task.status)));
+            const sortedTasks: TaskLayout = {}
+
+            for (let status of statuses) {
+                // create status key if it doesn't exist
+                if (!sortedTasks[status]) {
+                    sortedTasks[status] = [];
+                }
+                sortedTasks[status].push(
+                    ...board.tasks.filter(t => t.status === status)
+                        .sort(sortTaskAscending)
+                )
+            }
+
+            return { name: board.name, tasks: sortedTasks, updateTasks: [] }
         }
 
         case 'ADD_STATUS': {
@@ -27,19 +37,33 @@ const taskReducer = (state: stateInterface, action: TaskAction): stateInterface 
 
             if (!newTasks[status]) {
                 return {
+                    name: state.name,
                     tasks: {
                         ...newTasks,
                         [status]: []
-                    }, updateTasks: []
+                    },
+                    updateTasks: []
                 };
             }
 
-            return { tasks: newTasks, updateTasks: [] };
+            return { name: state.name, tasks: newTasks, updateTasks: [] };
+        }
+
+        case "ADD_TASK": {
+            const { task } = action.payload;
+
+            // Add the new task to the specified status and reset the order
+            const newTasks = {
+                ...state.tasks,
+                [task.status]: [...state.tasks[task.status], { ...task }] // Push task and set its order
+            };
+
+            return { name: state.name, tasks: newTasks, updateTasks: [task] };
         }
 
 
         case "SET_TASKS": {
-            return { tasks: action.payload, updateTasks: [] }
+            return { name: state.name, tasks: action.payload, updateTasks: [] }
         }
 
         case "DROP_TASK": {
@@ -74,18 +98,18 @@ const taskReducer = (state: stateInterface, action: TaskAction): stateInterface 
 
             // Identify tasks with changed orders
             const updatedOldStatusTasks = oldStatusTasksAfter.filter(
-                (task, index) => task.id !== oldStatusTasksBefore[index].id || task.order !== oldStatusTasksBefore[index].order
+                (task, index) => task.id !== oldStatusTasksBefore[index]?.id || task.order !== oldStatusTasksBefore[index].order
             );
 
             const updatedNewStatusTasks = newStatusTasksAfter.filter(
-                (task, index) => task.id !== newStatusTasksBefore[index].id || task.order !== newStatusTasksBefore[index].order
+                (task, index) => task.id !== newStatusTasksBefore[index]?.id || task.order !== newStatusTasksBefore[index].order
             );
 
             // Update only the tasks that have changed
             const tasksToUpdate = [...updatedOldStatusTasks, ...updatedNewStatusTasks];
 
 
-            return { tasks: newTasks, updateTasks: tasksToUpdate };
+            return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate };
         }
 
 
@@ -107,7 +131,7 @@ const taskReducer = (state: stateInterface, action: TaskAction): stateInterface 
 
             const tasksToUpdate = [removedTask!, ...tasksWithChangedOrder]
 
-            return { tasks: newTasks, updateTasks: tasksToUpdate };
+            return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate };
         }
 
         default:

@@ -3,9 +3,8 @@ import { useEffect, useState } from "react"
 // utils
 import { sortTaskAscending } from "../utils/taskUtils";
 
-const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, setBoardOverview: React.Dispatch<React.SetStateAction<BoardOverview>>) => {
+const useBoard = (id: number, boardDispatch: React.Dispatch<TaskAction>) => {
 
-    const [boardName, setBoardName] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -32,11 +31,7 @@ const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, setBoard
                             .sort(sortTaskAscending)
                     )
                 }
-                setBoardName(board.name)
-
-                setBoardOverview({ boardName: board.name, boardStatusLists: statuses })
-                taskDispatch({ type: "SET_TASKS", payload: sortedTasks })
-
+                boardDispatch({ type: "SET_BOARD", payload: board })
             } catch (err) {
                 const error = err as Error
                 setError(error.message);
@@ -47,7 +42,7 @@ const useBoard = (id: number, taskDispatch: React.Dispatch<TaskAction>, setBoard
         fetchBoard()
     }, [id])
 
-    return { boardName, loading, error }
+    return { loading, error }
 }
 
 export default useBoard

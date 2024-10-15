@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 
 // contexts
-import TaskDispatchContext from "../context/taskDispatchContext"
+import BoardDispatchContext from "../context/boardDispatchContext"
 import TaskContext from "../context/draggedTaskContext"
 
 interface CustomElements extends HTMLFormControlsCollection {
@@ -21,7 +21,7 @@ interface Props {
 
 const List: React.FC<Props> = ({ className, title, tasks }) => {
     const [addingTask, setAddingTask] = useState<boolean>(false);
-    const taskDispatch = useContext(TaskDispatchContext)
+    const taskDispatch = useContext(BoardDispatchContext)
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
 
     const handleDragStart = (task: Task) => {
