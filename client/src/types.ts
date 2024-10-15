@@ -1,7 +1,7 @@
 type Status = 'backlog' | 'todo' | 'in_progress' | 'completed' | string
 
 type Task = {
-    id: number,
+    id: number | null,
     name: string,
     order: number,
     status: Status
