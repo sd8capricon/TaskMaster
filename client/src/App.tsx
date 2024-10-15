@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 // Components
 import Sidebar from "./components/Sidebar";
@@ -23,10 +23,14 @@ const App: React.FC<{}> = () => {
   const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
 
   // Reducer
-  const [board, boardDispatch] = useReducer(taskReducer, { name: "", tasks: {}, updateTasks: [] })
+  const [board, boardDispatch] = useReducer(taskReducer, { name: "", tasks: {}, updateTasks: null, deleteTasks: null })
 
   // Fetch Data from server
   const { loading, error } = useBoard(boardId, boardDispatch)
+
+  useEffect(() => {
+    console.log(board.updateTasks);
+  }, [board])
 
   // Function to add new status list
   const addNewStatusList = (e: React.MouseEvent) => {

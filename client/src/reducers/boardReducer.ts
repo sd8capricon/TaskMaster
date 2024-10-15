@@ -22,7 +22,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 )
             }
 
-            return { name: board.name, tasks: sortedTasks, updateTasks: [] }
+            return { name: board.name, tasks: sortedTasks, updateTasks: null, deleteTasks: null }
         }
 
         case 'ADD_STATUS': {
@@ -37,11 +37,12 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                         ...newTasks,
                         [status]: []
                     },
-                    updateTasks: []
+                    updateTasks: null,
+                    deleteTasks: null
                 };
             }
 
-            return { name: state.name, tasks: newTasks, updateTasks: [] };
+            return { name: state.name, tasks: newTasks, updateTasks: null, deleteTasks: null };
         }
 
         case "ADD_TASK": {
@@ -53,12 +54,12 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 [task.status]: [...state.tasks[task.status], { ...task }] // Push task and set its order
             };
 
-            return { name: state.name, tasks: newTasks, updateTasks: [task] };
+            return { name: state.name, tasks: newTasks, updateTasks: [task], deleteTasks: null };
         }
 
 
         case "SET_TASKS": {
-            return { name: state.name, tasks: action.payload, updateTasks: [] }
+            return { name: state.name, tasks: action.payload, updateTasks: null, deleteTasks: null }
         }
 
         case "DROP_TASK": {
@@ -104,7 +105,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
             let tasksToUpdate = Array.from(new Set([...updatedOldStatusTasks, ...updatedNewStatusTasks]))
 
 
-            return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate };
+            return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate, deleteTasks: null };
         }
 
 
@@ -124,9 +125,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 return task.order !== originalTasks[index].order;
             });
 
-            const tasksToUpdate = [removedTask!, ...tasksWithChangedOrder]
-
-            return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate };
+            return { name: state.name, tasks: newTasks, updateTasks: tasksWithChangedOrder, deleteTasks: [removedTask!] };
         }
 
         default:

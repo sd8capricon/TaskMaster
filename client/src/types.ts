@@ -20,7 +20,8 @@ type Board = {
 type BoardState = {
     name: string,
     tasks: TaskLayout,
-    updateTasks: Task[]
+    updateTasks: Task[] | null,
+    deleteTasks: Task[] | null,
 }
 
 type BoardAction =
