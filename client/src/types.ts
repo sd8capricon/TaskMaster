@@ -7,7 +7,7 @@ type Task = {
     status: Status
 }
 
-interface TaskLayout {
+type TaskLayout = {
     [key: string]: Task[]
 }
 
