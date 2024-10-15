@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 // utils
 import { sortTaskAscending } from "../utils/taskUtils";
 
-const useBoard = (id: number, boardDispatch: React.Dispatch<TaskAction>) => {
+const useBoard = (id: number, boardDispatch: React.Dispatch<BoardAction>) => {
 
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
