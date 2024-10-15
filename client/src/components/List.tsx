@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
 
 // contexts
-import BoardDispatchContext from "../context/boardDispatchContext"
-import TaskContext from "../context/draggedTaskContext"
+import BoardDispatchContext from "../context/boardDispatch"
+import TaskContext from "../context/draggedTask"
 
 interface CustomElements extends HTMLFormControlsCollection {
     task: HTMLInputElement

@@ -1,5 +1,5 @@
 // utils
-import { resetOrder, sortTaskAscending } from "../utils/taskUtils";
+import { resetOrder, sortTaskAscending } from "../utils/task";
 
 
 const taskReducer = (state: BoardState, action: BoardAction): BoardState => {

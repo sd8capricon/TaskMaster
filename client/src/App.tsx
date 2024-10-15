@@ -6,17 +6,17 @@ import List from "./components/List"
 import Navbar from "./components/Navbar"
 
 // Reducers
-import taskReducer from "./reducers/boardReducer"
+import taskReducer from "./reducers/board"
 
 // Context
-import BoardDispatchContext from "./context/boardDispatchContext"
-import DraggedTaskContext from "./context/draggedTaskContext"
+import BoardDispatchContext from "./context/boardDispatch"
+import DraggedTaskContext from "./context/draggedTask"
 
 // Hooks
 import useBoard from "./hooks/useBoard"
 
 // Utils
-import { postData, postAndDeleteData } from "./utils/apiUtils"
+import { postData, postAndDeleteData } from "./utils/api"
 
 
 const App: React.FC<{}> = () => {
