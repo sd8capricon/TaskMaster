@@ -1,6 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import Task from "./task";
-import AppDataSource from "../db";
 
 @Entity()
 class Board {
