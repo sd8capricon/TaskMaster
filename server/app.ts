@@ -12,6 +12,7 @@ app.use(cors({
     origin: ['http://localhost:5173'],
 }))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'));
 
 AppDataSource.initialize().then(async () => {

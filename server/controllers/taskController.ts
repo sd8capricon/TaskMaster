@@ -34,6 +34,17 @@ export const updateTask = async (req: Request, res: Response) => {
     }
 }
 
+export const upsertTask = async (req: Request, res: Response) => {
+    const tasks = req.body.tasks
+    try {
+        const taskRes = await taskRepository.upsert([...tasks], ["id"])
+        res.status(200).json(taskRes)
+
+    } catch (error) {
+        res.status(400).json({ error })
+    }
+}
+
 export const getTaskById = async (req: Request, res: Response) => {
     const taskId = req.body.searchId
     try {
