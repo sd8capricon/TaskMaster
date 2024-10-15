@@ -1,19 +1,22 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react"
 
 // Components
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Sidebar"
 import List from "./components/List"
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar"
 
 // Reducers
-import taskReducer from "./reducers/boardReducer";
+import taskReducer from "./reducers/boardReducer"
 
 // Context
-import BoardDispatchContext from "./context/boardDispatchContext";
-import DraggedTaskContext from "./context/draggedTaskContext";
+import BoardDispatchContext from "./context/boardDispatchContext"
+import DraggedTaskContext from "./context/draggedTaskContext"
 
 // Hooks
-import useBoard from "./hooks/useBoard";
+import useBoard from "./hooks/useBoard"
+
+// Utils
+import { postData, postAndDeleteData } from "./utils/apiUtils"
 
 
 const App: React.FC<{}> = () => {
@@ -29,7 +32,16 @@ const App: React.FC<{}> = () => {
   const { loading, error } = useBoard(boardId, boardDispatch)
 
   useEffect(() => {
-    console.log(board.updateTasks);
+    if (board.updateTasks !== null) {
+      if (board.deleteTasks !== null) {
+        console.log("Make Request to delete and update as well")
+        postAndDeleteData(board.updateTasks, board.deleteTasks)
+      }
+      else {
+        console.log("Make Request to only update")
+        postData(board.updateTasks)
+      }
+    }
   }, [board])
 
   // Function to add new status list
