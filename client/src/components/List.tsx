@@ -35,7 +35,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
     const handleTaskAdd = (e: React.FormEvent<CustomForm>) => {
         e.preventDefault()
         const task_value = e.currentTarget.task.value;
-        const newTask = { id: null, name: task_value, order: board.tasks[title].length, status: title }
+        const newTask = { id: null, name: task_value, order: board.tasks[title].length, status: title, board: board.id }
         if (newTask) taskDispatch!({ type: "ADD_TASK", payload: { task: newTask } })
         setAddingTask(false)
     }

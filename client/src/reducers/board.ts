@@ -2,7 +2,7 @@
 import { resetOrder, sortTaskAscending } from "../utils/task";
 
 
-const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
+const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
     switch (action.type) {
         case "SET_BOARD": {
 
@@ -22,7 +22,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 )
             }
 
-            return { name: board.name, tasks: sortedTasks, updateTasks: null, deleteTasks: null }
+            return { id: board.id, name: board.name, tasks: sortedTasks, updateTasks: null, deleteTasks: null }
         }
 
         case 'ADD_STATUS': {
@@ -32,6 +32,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
 
             if (!newTasks[status]) {
                 return {
+                    id: state.id,
                     name: state.name,
                     tasks: {
                         ...newTasks,
@@ -42,7 +43,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 };
             }
 
-            return { name: state.name, tasks: newTasks, updateTasks: null, deleteTasks: null };
+            return { id: state.id, name: state.name, tasks: newTasks, updateTasks: null, deleteTasks: null };
         }
 
         case "ADD_TASK": {
@@ -54,12 +55,12 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 [task.status]: [...state.tasks[task.status], { ...task }] // Push task and set its order
             };
 
-            return { name: state.name, tasks: newTasks, updateTasks: [task], deleteTasks: null };
+            return { id: state.id, name: state.name, tasks: newTasks, updateTasks: [task], deleteTasks: null };
         }
 
 
         case "SET_TASKS": {
-            return { name: state.name, tasks: action.payload, updateTasks: null, deleteTasks: null }
+            return { id: state.id, name: state.name, tasks: action.payload, updateTasks: null, deleteTasks: null }
         }
 
         case "DROP_TASK": {
@@ -105,7 +106,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
             let tasksToUpdate = Array.from(new Set([...updatedOldStatusTasks, ...updatedNewStatusTasks]))
 
 
-            return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate, deleteTasks: null };
+            return { id: state.id, name: state.name, tasks: newTasks, updateTasks: tasksToUpdate, deleteTasks: null };
         }
 
 
@@ -125,7 +126,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
                 return task.order !== originalTasks[index].order;
             });
 
-            return { name: state.name, tasks: newTasks, updateTasks: tasksWithChangedOrder, deleteTasks: [removedTask!] };
+            return { id: state.id, name: state.name, tasks: newTasks, updateTasks: tasksWithChangedOrder, deleteTasks: [removedTask!] };
         }
 
         default:
@@ -133,4 +134,4 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
     }
 }
 
-export default taskReducer
+export default boardReducer

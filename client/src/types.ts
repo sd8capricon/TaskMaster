@@ -4,7 +4,8 @@ type Task = {
     id: number | null,
     name: string,
     order: number,
-    status: Status
+    status: Status,
+    board: number
 }
 
 type TaskLayout = {
@@ -18,6 +19,7 @@ type Board = {
 }
 
 type BoardState = {
+    id: number,
     name: string,
     tasks: TaskLayout,
     updateTasks: Task[] | null,

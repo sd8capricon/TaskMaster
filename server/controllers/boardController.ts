@@ -27,9 +27,11 @@ export const getBoardWithTasks = async (req: Request, res: Response) => {
                 status: task.status,
                 board: board.id, // Include board ID
             }));
-            res.status(200).json(tasksWithBoardId)
+            res.status(200).json({ ...board, tasks: tasksWithBoardId })
         }
-        res.status(200).json(board)
+        else {
+            res.status(200).json(board)
+        }
     } catch (error) {
         res.status(500).json({ error })
     }

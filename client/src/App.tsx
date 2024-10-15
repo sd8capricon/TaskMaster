@@ -6,7 +6,7 @@ import List from "./components/List"
 import Navbar from "./components/Navbar"
 
 // Reducers
-import taskReducer from "./reducers/board"
+import boardReducer from "./reducers/board"
 
 // Context
 import BoardDispatchContext from "./context/boardDispatch"
@@ -23,10 +23,10 @@ const App: React.FC<{}> = () => {
 
   // States
   const [boardId, setBoarId] = useState(1)
-  const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog" });
+  const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog", board: 0 });
 
   // Reducer
-  const [board, boardDispatch] = useReducer(taskReducer, { name: "", tasks: {}, updateTasks: null, deleteTasks: null })
+  const [board, boardDispatch] = useReducer(boardReducer, { id: 0, name: "", tasks: {}, updateTasks: null, deleteTasks: null })
 
   // Fetch Data from server
   const { loading, error } = useBoard(boardId, boardDispatch)
