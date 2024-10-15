@@ -1,45 +1,57 @@
 // utils
 import { resetOrder } from "../utils/taskUtils";
 
-const taskReducer = (state: TaskLayout, action: TaskAction): TaskLayout => {
+interface stateInterface {
+    tasks: TaskLayout,
+    updateTasks: Task[]
+}
+
+const taskReducer = (state: stateInterface, action: TaskAction): stateInterface => {
     switch (action.type) {
         case "ADD_TASK": {
             const { task } = action.payload;
 
             // Add the new task to the specified status and reset the order
             const newTasks = {
-                ...state,
-                [task.status]: [...state[task.status], { ...task }] // Push task and set its order
+                ...state.tasks,
+                [task.status]: [...state.tasks[task.status], { ...task }] // Push task and set its order
             };
 
-            return newTasks;
+            return { tasks: newTasks, updateTasks: [task] };
         }
 
         case 'ADD_STATUS': {
             const { status } = action.payload;
 
-            const newTasks = { ...state }
+            const newTasks = { ...state.tasks }
 
             if (!newTasks[status]) {
                 return {
-                    ...newTasks,
-                    [status]: []
+                    tasks: {
+                        ...newTasks,
+                        [status]: []
+                    }, updateTasks: []
                 };
             }
 
-            return newTasks;
+            return { tasks: newTasks, updateTasks: [] };
         }
 
 
         case "SET_TASKS": {
-            return action.payload
+            return { tasks: action.payload, updateTasks: [] }
         }
 
         case "DROP_TASK": {
 
             const { draggedTask, droppedTask, newStatus } = action.payload;
 
-            let newTasks = structuredClone(state);
+            let newTasks = structuredClone(state.tasks);
+
+
+            // Capture tasks before making any changes for comparison
+            const oldStatusTasksBefore = [...newTasks[draggedTask.status]];
+            const newStatusTasksBefore = [...newTasks[newStatus]];
 
             // Remove the dragged task from the old status list and reset order
             const oldStatus = draggedTask.status;
@@ -56,20 +68,46 @@ const taskReducer = (state: TaskLayout, action: TaskAction): TaskLayout => {
             newTasks[newStatus].splice(droppedTaskIndex + 1, 0, { ...draggedTask, status: newStatus });
             newTasks[newStatus] = newTasks[newStatus].map(resetOrder);
 
-            return newTasks;
+            // Tasks after changes for comparison
+            const oldStatusTasksAfter = [...newTasks[oldStatus]];
+            const newStatusTasksAfter = [...newTasks[newStatus]];
+
+            // Identify tasks with changed orders
+            const updatedOldStatusTasks = oldStatusTasksAfter.filter(
+                (task, index) => task.id !== oldStatusTasksBefore[index].id || task.order !== oldStatusTasksBefore[index].order
+            );
+
+            const updatedNewStatusTasks = newStatusTasksAfter.filter(
+                (task, index) => task.id !== newStatusTasksBefore[index].id || task.order !== newStatusTasksBefore[index].order
+            );
+
+            // Update only the tasks that have changed
+            const tasksToUpdate = [...updatedOldStatusTasks, ...updatedNewStatusTasks];
+
+
+            return { tasks: newTasks, updateTasks: tasksToUpdate };
         }
 
 
         case "REMOVE_TASK": {
             const { taskId, status } = action.payload;
 
+
             // Filter out the task to be removed and reset the order
-            let newTasks = { ...state };
+            let newTasks = { ...state.tasks };
+            const originalTasks = newTasks[status];
+            const removedTask = newTasks[status].find(t => t.id === taskId)
             newTasks[status] = newTasks[status]
                 .filter(t => t.id !== taskId)
                 .map(resetOrder);
 
-            return newTasks;
+            const tasksWithChangedOrder = newTasks[status].filter((task, index) => {
+                return task.order !== originalTasks[index].order;
+            });
+
+            const tasksToUpdate = [removedTask!, ...tasksWithChangedOrder]
+
+            return { tasks: newTasks, updateTasks: tasksToUpdate };
         }
 
         default:
