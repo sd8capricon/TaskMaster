@@ -101,7 +101,7 @@ const taskReducer = (state: BoardState, action: BoardAction): BoardState => {
             );
 
             // Update only the tasks that have changed
-            const tasksToUpdate = [...updatedOldStatusTasks, ...updatedNewStatusTasks];
+            let tasksToUpdate = Array.from(new Set([...updatedOldStatusTasks, ...updatedNewStatusTasks]))
 
 
             return { name: state.name, tasks: newTasks, updateTasks: tasksToUpdate };
