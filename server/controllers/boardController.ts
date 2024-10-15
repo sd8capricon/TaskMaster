@@ -19,6 +19,16 @@ export const getBoardWithTasks = async (req: Request, res: Response) => {
     try {
         const board = await boardRepository.findOne({ relations: { tasks: true }, where: { id: boardId } })
         // if null then board doesnt exist
+        if (board !== null) {
+            const tasksWithBoardId = board.tasks.map(task => ({
+                id: task.id,
+                name: task.name,
+                order: task.order,
+                status: task.status,
+                board: board.id, // Include board ID
+            }));
+            res.status(200).json(tasksWithBoardId)
+        }
         res.status(200).json(board)
     } catch (error) {
         res.status(500).json({ error })
