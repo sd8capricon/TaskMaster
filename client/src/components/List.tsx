@@ -15,11 +15,11 @@ interface CustomForm extends HTMLFormElement {
 interface Props {
     title: Status,
     className?: string,
-    tasks: TaskLayout
+    board: BoardState
 }
 
 
-const List: React.FC<Props> = ({ className, title, tasks }) => {
+const List: React.FC<Props> = ({ className, title, board }) => {
     const [addingTask, setAddingTask] = useState<boolean>(false);
     const taskDispatch = useContext(BoardDispatchContext)
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
@@ -35,7 +35,7 @@ const List: React.FC<Props> = ({ className, title, tasks }) => {
     const handleTaskAdd = (e: React.FormEvent<CustomForm>) => {
         e.preventDefault()
         const task_value = e.currentTarget.task.value;
-        const newTask = { id: -1, name: task_value, order: tasks[title].length, status: title }
+        const newTask = { id: -1, name: task_value, order: board.tasks[title].length, status: title }
         if (newTask) taskDispatch!({ type: "ADD_TASK", payload: { task: newTask } })
         setAddingTask(false)
     }
@@ -49,6 +49,8 @@ const List: React.FC<Props> = ({ className, title, tasks }) => {
             type: 'DROP_TASK',
             payload: { draggedTask, droppedTask, newStatus }
         });
+
+        console.log(board);
     }
 
     return (
@@ -58,7 +60,7 @@ const List: React.FC<Props> = ({ className, title, tasks }) => {
                 className="card-list list-none"
                 onDragOver={(e) => e.preventDefault()}
             >
-                {tasks[title].map(t =>
+                {board.tasks[title].map(t =>
                     <li
                         key={t.id}
                         draggable
@@ -69,7 +71,7 @@ const List: React.FC<Props> = ({ className, title, tasks }) => {
                     </li>
                 )}
 
-                {tasks[title].length === 0 && (
+                {board.tasks[title].length === 0 && (
                     <li
                         className="empty-dropzone"
                         onDrop={() => handleDrop(null, title)}

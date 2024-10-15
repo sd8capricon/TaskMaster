@@ -57,7 +57,7 @@ const App: React.FC<{}> = () => {
                         key={key}
                         className="mr-10"
                         title={status}
-                        tasks={board.tasks} />
+                        board={board} />
                     )}
                     <button onClick={addNewStatusList}>Create New List</button>
                   </>
