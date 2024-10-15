@@ -49,8 +49,6 @@ const List: React.FC<Props> = ({ className, title, board }) => {
             type: 'DROP_TASK',
             payload: { draggedTask, droppedTask, newStatus }
         });
-
-        console.log(board);
     }
 
     return (
