@@ -12,6 +12,11 @@ type TaskLayout = {
     [key: string]: Task[]
 }
 
+type BoardWithoutTasks = {
+    id: number,
+    name: string
+}
+
 type Board = {
     id: number,
     name: string,

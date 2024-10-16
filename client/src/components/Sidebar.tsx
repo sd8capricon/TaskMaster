@@ -1,4 +1,14 @@
-const Sidebar: React.FC<{}> = () => {
+interface Props {
+    boards: BoardWithoutTasks[],
+    setBoardId: React.Dispatch<React.SetStateAction<number>>
+}
+
+const Sidebar: React.FC<Props> = ({ boards, setBoardId }) => {
+
+    const handleBoardChange = (boardIndex: number) => {
+        setBoardId(boardIndex)
+    }
+
     return (
         <div className="w-64 text-gray-400 bg-black">
             <div className="px-2.5 py-1 border-y border-y-gray-600 flex items-center">
@@ -8,10 +18,18 @@ const Sidebar: React.FC<{}> = () => {
                     <span className="text-sm">Free</span>
                 </div>
             </div>
-            <div className="px-4 py-1 flex">
-                <img src="" alt="" className="h-5 w-5 mr-3" />
-                Project Board
-            </div>
+            <ul>
+                {
+                    boards.map((b, i) =>
+                        <li key={i}>
+                            <button onClick={(_) => handleBoardChange(boards[i].id)} className="my-3 px-4 py-1 flex">
+                                <img src="" alt="" className="h-5 w-5 mr-3" />
+                                {b.name}
+                            </button>
+                        </li>
+                    )
+                }
+            </ul>
         </div>
     )
 

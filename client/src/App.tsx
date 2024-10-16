@@ -15,14 +15,14 @@ import BoardDispatchContext from "./context/boardDispatch"
 import useBoard from "./hooks/useBoard"
 
 // Utils
-import { postData, postAndDeleteData } from "./utils/api"
+import { getAllBoards, postData, postAndDeleteData } from "./utils/api"
 
 
 const App: React.FC<{}> = () => {
 
   // States
-  const [boardId, setBoarId] = useState(1)
-  // const [draggedTask, setDraggedTask] = useState<Task>({ id: 0, name: "", order: 0, status: "backlog", board: 0 });
+  const [allBoards, setAllBoards] = useState<BoardWithoutTasks[]>([])
+  const [boardId, setBoardId] = useState(0)
 
   // Reducer
   const [board, boardDispatch] = useReducer(boardReducer, { id: 0, name: "", tasks: {}, updateTasks: null, deleteTasks: null })
@@ -31,6 +31,16 @@ const App: React.FC<{}> = () => {
   const { loading, error } = useBoard(boardId, boardDispatch)
 
   useEffect(() => {
+    const fetchBoards = async () => {
+      if (boardId === 0) {
+        const boards = await getAllBoards(); // Await the async call
+        setAllBoards(boards)
+        setBoardId(boards[0].id)
+      }
+    };
+
+    fetchBoards();
+
     if (board.updateTasks !== null) {
       if (board.deleteTasks !== null) {
         console.log("Make Request to delete and update as well")
@@ -52,7 +62,7 @@ const App: React.FC<{}> = () => {
       {/* Navbar */}
       <Navbar />
       <div className="flex h-full">
-        <Sidebar />
+        <Sidebar boards={allBoards} setBoardId={setBoardId} />
         <div className="bg-emerald-700 flex-grow">
           {
             error ? error :
@@ -60,8 +70,6 @@ const App: React.FC<{}> = () => {
                 <Board board={board} />
               </BoardDispatchContext.Provider>
           }
-          {/* Check Changing Boards */}
-          <button onClick={() => setBoarId(boardId + 1)}>try change Board</button>
         </div>
       </div>
     </div >

@@ -1,3 +1,9 @@
+export const getAllBoards = async () => {
+    let res = await fetch("http://localhost:3000/board")
+    let boards = await res.json() as BoardWithoutTasks[]
+    return boards
+}
+
 export const postData = async (updateTasks: Task[]) => {
     const reqBody = { tasks: updateTasks }
     let res = await fetch("http://localhost:3000/task", {
