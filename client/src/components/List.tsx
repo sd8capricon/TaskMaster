@@ -21,7 +21,7 @@ interface Props {
 
 const List: React.FC<Props> = ({ className, title, board }) => {
     const [addingTask, setAddingTask] = useState<boolean>(false);
-    const taskDispatch = useContext(BoardDispatchContext)
+    const boardDispatch = useContext(BoardDispatchContext)
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
 
     const handleDragStart = (task: Task) => {
@@ -36,7 +36,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
         e.preventDefault()
         const task_value = e.currentTarget.task.value;
         const newTask = { id: null, name: task_value, order: board.tasks[title].length, status: title, board: board.id }
-        if (newTask) taskDispatch!({ type: "ADD_TASK", payload: { task: newTask } })
+        if (newTask) boardDispatch!({ type: "ADD_TASK", payload: { task: newTask } })
         setAddingTask(false)
     }
 
@@ -45,7 +45,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
         if (!draggedTask) return
 
         // Dispatch action to the reducer
-        taskDispatch!({
+        boardDispatch!({
             type: 'DROP_TASK',
             payload: { draggedTask, droppedTask, newStatus }
         });
@@ -64,8 +64,9 @@ const List: React.FC<Props> = ({ className, title, board }) => {
                         draggable
                         onDragStart={() => handleDragStart(t)}
                         onDrop={() => handleDrop(t, title)}
-                        className="card py-1.5 px-3 bg-gray-800 rounded-lg mb-2">
+                        className="card py-1.5 px-3 bg-gray-800 rounded-lg mb-2 flex justify-between">
                         {t.name}
+                        <button onClick={() => boardDispatch!({ type: "REMOVE_TASK", payload: { taskId: t.id!, status: title } })} className="">Del</button>
                     </li>
                 )}
 
