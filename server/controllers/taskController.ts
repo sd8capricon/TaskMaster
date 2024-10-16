@@ -75,3 +75,22 @@ export const getTaskByBoardId = async (req: Request, res: Response) => {
         res.status(500).json({ error })
     }
 }
+
+export const updateAndDelete = async (req: Request, res: Response) => {
+    const updateTasks = req.body.updateTasks
+    const deleteTasks = req.body.deleteTasks
+
+    try {
+        const deleteTaskResponse = await taskRepository.delete(deleteTasks[0])
+
+        if (updateTasks.length > 0) {
+            const updateResponse = await taskRepository.upsert(updateTasks, ["id"])
+            res.status(200).json({ delete: deleteTaskResponse, update: updateResponse })
+        }
+        else {
+            res.status(200).json({ update: deleteTaskResponse })
+        }
+    } catch (error) {
+        res.status(500).json({ error })
+    }
+}
