@@ -52,8 +52,8 @@ const List: React.FC<Props> = ({ className, title, board }) => {
     }
 
     return (
-        <div className={"list shrink-0 w-64 px-3 py-1 bg-black text-gray-300 rounded-xl h-fit" + ` ${className}`}>
-            <div>{title}</div>
+        <div className={"list shrink-0 w-64 px-3.5 py-3 bg-black text-gray-300 rounded-xl h-fit" + ` ${className}`}>
+            <div className="mb-3">{title}</div>
             <ul
                 className="card-list list-none"
                 onDragOver={(e) => e.preventDefault()}
