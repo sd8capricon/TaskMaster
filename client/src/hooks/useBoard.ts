@@ -14,6 +14,9 @@ const useBoard = (id: number, boardDispatch: React.Dispatch<BoardAction>) => {
                     throw new Error("Failed to fetch board data")
                 }
                 const board = await res.json() as Board
+                if (board === null)
+                    // No board
+                    throw new Error("Board id not found")
                 boardDispatch({ type: "SET_BOARD", payload: board })
             } catch (err) {
                 const error = err as Error
