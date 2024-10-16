@@ -115,16 +115,16 @@ const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
 
 
             // Filter out the task to be removed and reset the order
-            let newTasks = { ...state.tasks };
-            const originalTasks = newTasks[status];
+            let newTasks = { ...state.tasks }
+            const originalTasks = [...newTasks[status]]
             const removedTask = newTasks[status].find(t => t.id === taskId)
             newTasks[status] = newTasks[status]
                 .filter(t => t.id !== taskId)
                 .map(resetOrder);
 
-            const tasksWithChangedOrder = newTasks[status].filter((task, index) => {
-                return task.order !== originalTasks[index].order;
-            });
+            const tasksWithChangedOrder = newTasks[status].filter(
+                (task, index) => task.id !== originalTasks[index]?.id || task.order !== originalTasks[index].order
+            );
 
             return { id: state.id, name: state.name, tasks: newTasks, updateTasks: tasksWithChangedOrder, deleteTasks: [removedTask!] };
         }
