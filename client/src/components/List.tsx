@@ -72,7 +72,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
 
                 {board.tasks[title].length === 0 && (
                     <li
-                        className="empty-dropzone"
+                        className="empty-dropzone p-3 mb-2 border-2 border-gray-600"
                         onDrop={() => handleDrop(null, title)}
                         onDragOver={(e) => e.preventDefault()}
                     >
