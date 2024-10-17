@@ -32,9 +32,10 @@ type BoardState = {
 }
 
 type BoardAction =
-    { type: 'DROP_TASK', payload: { draggedTask: Task, droppedTask: Task | null, newStatus: Status } }
-    | { type: 'REMOVE_TASK', payload: { taskId: number, status: Status } }
-    | { type: "SET_BOARD", payload: Board }
-    | { type: 'SET_TASKS', payload: TaskLayout }
+    { type: "SET_BOARD", payload: Board }
     | { type: 'ADD_STATUS', payload: { status: Status } }
+    | { type: 'SET_TASKS', payload: TaskLayout }
     | { type: 'ADD_TASK', payload: { task: Task } }
+    | { type: 'UPDATE_TASK', payload: { taskId: number, newName: string, status: string } }
+    | { type: 'DROP_TASK', payload: { draggedTask: Task, droppedTask: Task | null, newStatus: Status } }
+    | { type: 'REMOVE_TASK', payload: { taskId: number, status: Status } }

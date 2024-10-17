@@ -109,6 +109,17 @@ const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
             return { id: state.id, name: state.name, tasks: newTasks, updateTasks: tasksToUpdate, deleteTasks: null };
         }
 
+        case "UPDATE_TASK": {
+            const { taskId, newName, status } = action.payload
+
+            const newTasks = structuredClone(state.tasks)
+            newTasks[status] = newTasks[status].map(task =>
+                task.id === taskId ? { ...task, name: newName } : task
+            )
+            const updatedTask = newTasks[status].find(t => t.id === taskId);
+
+            return { id: state.id, name: state.name, tasks: newTasks, updateTasks: [updatedTask!], deleteTasks: null }
+        }
 
         case "REMOVE_TASK": {
             const { taskId, status } = action.payload;
