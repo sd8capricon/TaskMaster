@@ -32,7 +32,7 @@ const Navbar: React.FC<Props> = ({ setAllBoards, setBoardId }) => {
             <h1 className="brand mr-16 text-3xl">TaskMaster</h1>
             <div className="mr-6">
                 {addingBoard ?
-                    <form onSubmit={handleAddBoard}>
+                    <form onSubmit={handleAddBoard} className="flex">
                         <input
                             type="text"
                             placeholder="Enter New Board Name"
@@ -40,8 +40,14 @@ const Navbar: React.FC<Props> = ({ setAllBoards, setBoardId }) => {
                             id="boardName"
                             className="mr-4 px-4 py-1 bg-transparent border border-gray-300"
                         />
-                        <PrimaryBtn className="mr-4" type="submit">Create</PrimaryBtn>
-                        <button onClick={() => setAddingBoard(false)}>x</button>
+                        <div className="flex items-center">
+                            <PrimaryBtn className="mr-4" type="submit">Create</PrimaryBtn>
+                            <button onClick={() => setAddingBoard(false)}>
+                                <svg className="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
                     </form> :
                     <PrimaryBtn onClick={_ => setAddingBoard(true)}>Create</PrimaryBtn>
                 }
