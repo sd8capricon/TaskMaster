@@ -1,6 +1,10 @@
+import { useState } from "react"
 import PrimaryBtn from "./PrimaryBtn"
 
 const Navbar: React.FC<{}> = () => {
+
+    const [addingBoard, setAddingBoard] = useState<boolean>(false)
+
     return (
         <div className="py-2.5 text-gray-300 bg-black">
             <nav className="flex justify-between px-2.5 items-center">
@@ -9,9 +13,20 @@ const Navbar: React.FC<{}> = () => {
                     <ul className="flex items-center">
                         <li className="mr-16">Starred</li>
                         <li>
-                            <PrimaryBtn>
-                                Create
-                            </PrimaryBtn>
+                            {addingBoard ?
+                                <form onSubmit={_ => setAddingBoard(false)}>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter New Board Name"
+                                        name="name"
+                                        id="boardName"
+                                        className="mr-4 px-4 py-1 bg-transparent border border-gray-300"
+                                    />
+                                    <PrimaryBtn className="mr-4" type="submit">Create</PrimaryBtn>
+                                    <button onClick={() => setAddingBoard(false)}>x</button>
+                                </form> :
+                                <PrimaryBtn onClick={_ => setAddingBoard(true)}>Create</PrimaryBtn>
+                            }
                         </li>
                     </ul>
                 </div>
