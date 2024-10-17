@@ -9,6 +9,18 @@ export const getAllBoards = async () => {
     return boards
 }
 
+export const editBoardName = async (board: BoardWithoutTasks) => {
+    const reqBody = { board }
+    let res = await fetch("http://localhost:3000/board", {
+        method: "PUT",
+        headers: requestHeader,
+        body: JSON.stringify(reqBody)
+    })
+    res = await res.json()
+    console.log(res);
+
+}
+
 export const createBoard = async (boardName: string) => {
     const reqBody = {
         board: { name: boardName }

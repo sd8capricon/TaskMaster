@@ -33,6 +33,7 @@ type BoardState = {
 
 type BoardAction =
     { type: "SET_BOARD", payload: Board }
+    | { type: "EDIT_BOARD_NAME", payload: { newBoardName: string } }
     | { type: 'ADD_STATUS', payload: { status: Status } }
     | { type: 'SET_TASKS', payload: TaskLayout }
     | { type: 'ADD_TASK', payload: { task: Task } }

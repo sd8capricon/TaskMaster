@@ -5,7 +5,6 @@ import { resetOrder, sortTaskAscending } from "../utils/task";
 const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
     switch (action.type) {
         case "SET_BOARD": {
-
             const board = action.payload
 
             const statuses = Array.from(new Set(board.tasks.map(task => task.status)));
@@ -23,6 +22,18 @@ const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
             }
 
             return { id: board.id, name: board.name, tasks: sortedTasks, updateTasks: null, deleteTasks: null }
+        }
+
+        case "EDIT_BOARD_NAME": {
+            const { newBoardName } = action.payload;
+
+            // Update the board's name
+            return {
+                ...state,
+                name: newBoardName,
+                updateTasks: null,
+                deleteTasks: null,
+            };
         }
 
         case 'ADD_STATUS': {

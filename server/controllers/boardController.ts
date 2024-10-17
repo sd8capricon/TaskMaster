@@ -37,6 +37,16 @@ export const getBoardWithTasks = async (req: Request, res: Response) => {
     }
 }
 
+export const upsertBoard = async (req: Request, res: Response) => {
+    const board = req.body.board
+    try {
+        const boardRes = await boardRepository.upsert(board, ["id"])
+        res.status(200).json(boardRes)
+    } catch (error) {
+        res.status(500).json({ error })
+    }
+}
+
 export const deleteBoard = async (req: Request, res: Response) => {
     const boardId = req.body.searchId
     try {

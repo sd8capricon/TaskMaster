@@ -23,9 +23,10 @@ interface Props {
 
 
 const List: React.FC<Props> = ({ className, title, board }) => {
+    // state
     const [addingTask, setAddingTask] = useState<boolean>(false)
     const [editTask, setEditTask] = useState<Task | null>()
-
+    // context
     const boardDispatch = useContext(BoardDispatchContext)
     const { draggedTask, setDraggedTask } = useContext(TaskContext)
 
@@ -46,8 +47,6 @@ const List: React.FC<Props> = ({ className, title, board }) => {
     }
 
     const handleEditTask = (e: React.FormEvent<HTMLFormElement>) => {
-        console.log("hello");
-
         e.preventDefault()
         const target = e.target as HTMLFormElement
         const value = target.taskName.value
@@ -106,7 +105,6 @@ const List: React.FC<Props> = ({ className, title, board }) => {
                                             <svg className="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                                             </svg>
-
                                         </button>
                                     </div>
                                 </> :

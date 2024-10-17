@@ -51,6 +51,15 @@ const App: React.FC<{}> = () => {
         postData(board.updateTasks)
       }
     }
+
+    let currentBoardFromList = allBoards.find(b => b.id === board.id)
+
+    if (boardId !== 0 && board.name !== currentBoardFromList?.name) {
+      let i = allBoards.indexOf(currentBoardFromList!)
+      let newBoards = [...allBoards]
+      newBoards[i].name = board.name
+      setAllBoards(newBoards)
+    }
   }, [board])
 
   // TODO: Hanlde Error and Loading

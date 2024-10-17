@@ -39,7 +39,6 @@ export const upsertTask = async (req: Request, res: Response) => {
     try {
         const taskRes = await taskRepository.upsert([...tasks], ["id"])
         res.status(200).json(taskRes)
-
     } catch (error) {
         res.status(400).json({ error })
     }
