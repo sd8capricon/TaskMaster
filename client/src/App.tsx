@@ -62,7 +62,7 @@ const App: React.FC<{}> = () => {
       {/* Navbar */}
       <Navbar />
       <div className="grid grid-cols-6 h-full">
-        <Sidebar boards={allBoards} setBoardId={setBoardId} />
+        <Sidebar boards={allBoards} setBoardId={setBoardId} setAllBoards={setAllBoards} />
         <div className="col-span-5 bg-emerald-700">
           {
             error ? error :
