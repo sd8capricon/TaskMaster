@@ -6,9 +6,10 @@ import { createBoard } from "../utils/api"
 
 interface Props {
     setAllBoards: React.Dispatch<React.SetStateAction<BoardWithoutTasks[]>>
+    setBoardId: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Navbar: React.FC<Props> = ({ setAllBoards }) => {
+const Navbar: React.FC<Props> = ({ setAllBoards, setBoardId }) => {
 
     const [addingBoard, setAddingBoard] = useState<boolean>(false)
 
@@ -22,6 +23,7 @@ const Navbar: React.FC<Props> = ({ setAllBoards }) => {
             let newB = [...b, board]
             return newB
         })
+        setBoardId(board.id)
         setAddingBoard(false)
     }
 

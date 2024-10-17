@@ -33,7 +33,7 @@ const App: React.FC<{}> = () => {
   useEffect(() => {
     const fetchBoards = async () => {
       if (boardId === 0) {
-        const boards = await getAllBoards(); // Await the async call
+        const boards = await getAllBoards();
         setAllBoards(boards)
         setBoardId(boards[0].id)
       }
@@ -69,15 +69,19 @@ const App: React.FC<{}> = () => {
   return (
     <>
       {/* Navbar */}
-      <Navbar setAllBoards={setAllBoards} />
+      <Navbar setAllBoards={setAllBoards} setBoardId={setBoardId} />
       <div className="grid grid-cols-6 h-full">
         <Sidebar boards={allBoards} setAllBoards={setAllBoards} setBoardId={setBoardId} />
         <div className="col-span-5 bg-emerald-700">
           {
-            error ? error :
-              <BoardDispatchContext.Provider value={boardDispatch}>
-                <Board board={board} />
-              </BoardDispatchContext.Provider>
+            allBoards.length <= 0 ?
+              <div className="mt-10 text-center text-white">
+                No boards Found, Please Create a Board
+              </div> :
+              error ? error :
+                <BoardDispatchContext.Provider value={boardDispatch}>
+                  <Board board={board} />
+                </BoardDispatchContext.Provider>
           }
         </div>
       </div>
