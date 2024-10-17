@@ -58,12 +58,12 @@ const App: React.FC<{}> = () => {
 
 
   return (
-    <div className="h-full">
+    <>
       {/* Navbar */}
       <Navbar />
-      <div className="flex h-full">
+      <div className="grid grid-cols-6 h-full">
         <Sidebar boards={allBoards} setBoardId={setBoardId} />
-        <div className="bg-emerald-700 flex-grow">
+        <div className="col-span-5 bg-emerald-700">
           {
             error ? error :
               <BoardDispatchContext.Provider value={boardDispatch}>
@@ -72,7 +72,7 @@ const App: React.FC<{}> = () => {
           }
         </div>
       </div>
-    </div >
+    </>
   );
 }
 

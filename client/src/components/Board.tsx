@@ -31,7 +31,7 @@ const Board: React.FC<Props> = ({ board }) => {
     return (
         <>
             <h1 className="pl-12 bg-white opacity-50 text-4xl">{board.name}</h1>
-            <div className="px-10 py-4 flex items-start board">
+            <div className="px-10 py-4 flex items-start board overflow-x-scroll no-scrollbar">
                 <DraggedTaskContext.Provider value={{ draggedTask, setDraggedTask }}>
                     {Object.keys(board.tasks).map((status, key) =>
                         <List

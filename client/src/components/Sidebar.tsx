@@ -10,7 +10,7 @@ const Sidebar: React.FC<Props> = ({ boards, setBoardId }) => {
     }
 
     return (
-        <div className="w-64 text-gray-400 bg-black">
+        <div className="col-span-1 text-gray-400 bg-black">
             <div className="px-2.5 py-1 border-y border-y-gray-600 flex items-center">
                 <img src="" alt="" className="h-8 w-8 mr-3" />
                 <div className="leading-tight">
