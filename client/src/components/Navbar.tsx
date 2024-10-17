@@ -26,33 +26,26 @@ const Navbar: React.FC<Props> = ({ setAllBoards }) => {
     }
 
     return (
-        <div className="py-2.5 text-gray-300 bg-black">
-            <nav className="flex justify-between px-2.5 items-center">
-                <div className="flex items-center">
-                    <div className="brand mr-16 text-xl">TaskMaster</div>
-                    <ul className="flex items-center">
-                        <li className="mr-16">Starred</li>
-                        <li>
-                            {addingBoard ?
-                                <form onSubmit={handleAddBoard}>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter New Board Name"
-                                        name="boardName"
-                                        id="boardName"
-                                        className="mr-4 px-4 py-1 bg-transparent border border-gray-300"
-                                    />
-                                    <PrimaryBtn className="mr-4" type="submit">Create</PrimaryBtn>
-                                    <button onClick={() => setAddingBoard(false)}>x</button>
-                                </form> :
-                                <PrimaryBtn onClick={_ => setAddingBoard(true)}>Create</PrimaryBtn>
-                            }
-                        </li>
-                    </ul>
-                </div>
-                <input className="mr-24 px-4 py-1 bg-transparent border border-gray-300" placeholder="Search" type="text" />
-            </nav>
-        </div>
+        <nav className="flex justify-between p-2.5 items-center text-gray-300 bg-black">
+            <div className="flex items-center">
+                <h1 className="brand mr-16 text-xl">TaskMaster</h1>
+            </div>
+            <div className="mr-6">
+                {addingBoard ?
+                    <form onSubmit={handleAddBoard}>
+                        <input
+                            type="text"
+                            placeholder="Enter New Board Name"
+                            name="boardName"
+                            id="boardName"
+                            className="mr-4 px-4 py-1 bg-transparent border border-gray-300"
+                        />
+                        <PrimaryBtn className="mr-4" type="submit">Create</PrimaryBtn>
+                        <button onClick={() => setAddingBoard(false)}>x</button>
+                    </form> :
+                    <PrimaryBtn onClick={_ => setAddingBoard(true)}>Create</PrimaryBtn>
+                }</div>
+        </nav>
     )
 }
 
