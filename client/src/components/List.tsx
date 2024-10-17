@@ -1,5 +1,8 @@
 import { useContext, useState } from "react"
 
+// components
+import PrimaryBtn from "./PrimaryBtn"
+
 // contexts
 import BoardDispatchContext from "../context/boardDispatch"
 import TaskContext from "../context/draggedTask"
@@ -94,7 +97,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
                         placeholder="Enter a title for this task"
                     />
                     <div className="flex">
-                        <button type="submit" className="px-3 py-1 mr-4 bg-sky-800 text-white rounded-sm">Add</button>
+                        <PrimaryBtn type="submit" className="mr-4">Add</PrimaryBtn>
                         <button onClick={() => setAddingTask(false)}>x</button>
                     </div>
                 </form>
@@ -103,7 +106,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
                     onClick={handleClick}
                     onDrop={() => handleDrop(null, title)}
                     onDragOver={(e) => e.preventDefault()}
-                    className="px-3 py-1 mb-3 w-full text-left rounded-lg hover:bg-gray-800"
+                    className="px-3 py-1.5 mt-1 mb-3 w-full text-left rounded-lg hover:bg-gray-800"
                 >
                     <span className="mr-1">+</span> Add a card
                 </button>

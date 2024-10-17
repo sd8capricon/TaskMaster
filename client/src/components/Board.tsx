@@ -6,6 +6,7 @@ import DraggedTaskContext from "../context/draggedTask"
 
 // Components
 import List from "../components/List"
+import PrimaryBtn from "./PrimaryBtn"
 
 interface Props {
     board: BoardState
@@ -50,7 +51,7 @@ const Board: React.FC<Props> = ({ board }) => {
                                     placeholder="Enter a title for this List"
                                 />
                                 <div className="flex">
-                                    <button type="submit" className="px-3 py-1 mr-4 bg-sky-800 text-white rounded-sm">Add</button>
+                                    <PrimaryBtn type="submit" className="mr-4">Add</PrimaryBtn>
                                     <button onClick={() => setAddingStatusList(false)}>x</button>
                                 </div>
                             </form> :
