@@ -88,7 +88,7 @@ const List: React.FC<Props> = ({ className, title, board }) => {
                                 <>
                                     <form onSubmit={handleEditTask} className="flex w-full">
                                         <input
-                                            className="bg-gray-300 text-red-800 w-full mr-1 px-1"
+                                            className="bg-transparent text-white w-full mr-1 px-1"
                                             type="text"
                                             name="taskName"
                                             placeholder={t.name}
