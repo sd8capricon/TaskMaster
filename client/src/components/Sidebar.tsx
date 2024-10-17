@@ -21,17 +21,17 @@ const Sidebar: React.FC<Props> = ({ boards, setBoardId, setAllBoards }) => {
 
     return (
         <div className="col-span-1 text-gray-400 bg-black">
-            <div className="px-2.5 py-1 border-y border-y-gray-600 flex items-center">
-                <img src="" alt="" className="h-8 w-8 mr-3" />
+            <div className="px-4 py-1 border-y border-y-gray-600 flex items-center">
+                {/* <img src="" alt="" className="h-8 w-8 mr-3" /> */}
                 <div className="leading-tight">
-                    Sid's Team<br />
-                    <span className="text-sm">Free</span>
+                    Boards<br />
+                    <span className="text-sm">All</span>
                 </div>
             </div>
             <ul>
                 {
                     boards.map((b, i) =>
-                        <li key={i} className="flex justify-between my-3 py-1 px-4">
+                        <li key={i} className="flex justify-between my-3 py-1 px-5">
                             <button onClick={(_) => handleBoardChange(b.id)} className=" flex">
                                 <img src="" alt="" className="h-5 w-5 mr-3" />
                                 {b.name}
