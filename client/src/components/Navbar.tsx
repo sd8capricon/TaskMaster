@@ -1,9 +1,29 @@
 import { useState } from "react"
+// components
 import PrimaryBtn from "./PrimaryBtn"
+// utils
+import { createBoard } from "../utils/api"
 
-const Navbar: React.FC<{}> = () => {
+interface Props {
+    setAllBoards: React.Dispatch<React.SetStateAction<BoardWithoutTasks[]>>
+}
+
+const Navbar: React.FC<Props> = ({ setAllBoards }) => {
 
     const [addingBoard, setAddingBoard] = useState<boolean>(false)
+
+    const handleAddBoard = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const target = e.target as HTMLFormElement
+        const value = target.boardName.value
+
+        const board = await createBoard(value)
+        setAllBoards(b => {
+            let newB = [...b, board]
+            return newB
+        })
+        setAddingBoard(false)
+    }
 
     return (
         <div className="py-2.5 text-gray-300 bg-black">
@@ -14,11 +34,11 @@ const Navbar: React.FC<{}> = () => {
                         <li className="mr-16">Starred</li>
                         <li>
                             {addingBoard ?
-                                <form onSubmit={_ => setAddingBoard(false)}>
+                                <form onSubmit={handleAddBoard}>
                                     <input
                                         type="text"
                                         placeholder="Enter New Board Name"
-                                        name="name"
+                                        name="boardName"
                                         id="boardName"
                                         className="mr-4 px-4 py-1 bg-transparent border border-gray-300"
                                     />

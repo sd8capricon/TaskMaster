@@ -9,14 +9,27 @@ export const getAllBoards = async () => {
     return boards
 }
 
+export const createBoard = async (boardName: string) => {
+    const reqBody = {
+        board: { name: boardName }
+    }
+    let res = await fetch("http://localhost:3000/board", {
+        method: "POST",
+        headers: requestHeader,
+        body: JSON.stringify(reqBody)
+    })
+    let board = await res.json() as BoardWithoutTasks
+
+    return board
+}
+
 export const deleteBoard = async (boardId: number) => {
     const reqBody = { searchId: boardId }
     let res = await fetch(`http://localhost:3000/board/${boardId}`, {
         method: "DELETE",
         headers: requestHeader,
         body: JSON.stringify(reqBody)
-    }
-    )
+    })
     res = await res.json()
 }
 

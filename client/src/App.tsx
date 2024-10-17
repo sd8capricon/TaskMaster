@@ -60,9 +60,9 @@ const App: React.FC<{}> = () => {
   return (
     <>
       {/* Navbar */}
-      <Navbar />
+      <Navbar setAllBoards={setAllBoards} />
       <div className="grid grid-cols-6 h-full">
-        <Sidebar boards={allBoards} setBoardId={setBoardId} setAllBoards={setAllBoards} />
+        <Sidebar boards={allBoards} setAllBoards={setAllBoards} setBoardId={setBoardId} />
         <div className="col-span-5 bg-emerald-700">
           {
             error ? error :
