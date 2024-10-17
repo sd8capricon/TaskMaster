@@ -26,10 +26,8 @@ const Navbar: React.FC<Props> = ({ setAllBoards }) => {
     }
 
     return (
-        <nav className="flex justify-between p-2.5 items-center text-gray-300 bg-black">
-            <div className="flex items-center">
-                <h1 className="brand mr-16 text-xl">TaskMaster</h1>
-            </div>
+        <nav className="flex justify-between px-2.5 py-3 items-center text-gray-300 bg-black">
+            <h1 className="brand mr-16 text-3xl">TaskMaster</h1>
             <div className="mr-6">
                 {addingBoard ?
                     <form onSubmit={handleAddBoard}>
@@ -44,7 +42,8 @@ const Navbar: React.FC<Props> = ({ setAllBoards }) => {
                         <button onClick={() => setAddingBoard(false)}>x</button>
                     </form> :
                     <PrimaryBtn onClick={_ => setAddingBoard(true)}>Create</PrimaryBtn>
-                }</div>
+                }
+            </div>
         </nav>
     )
 }
