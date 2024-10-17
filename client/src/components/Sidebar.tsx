@@ -33,7 +33,7 @@ const Sidebar: React.FC<Props> = ({ boards, setBoardId, setAllBoards }) => {
                     boards.map((b, i) =>
                         <li key={i} className="flex justify-between my-3 py-1 px-5">
                             <button onClick={(_) => handleBoardChange(b.id)} className=" flex">
-                                <img src="" alt="" className="h-5 w-5 mr-3" />
+                                <img src={`https://picsum.photos/seed/${b.id}/100/100`} alt="" className="h-5 w-5 mr-3" />
                                 {b.name}
                             </button>
                             <button onClick={_ => handleDeleteBoard(b.id)} className="">
