@@ -1,0 +1,23 @@
+# Use a node base image
+FROM node:18-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the package.json and install dependencies
+COPY . .
+
+# Install all the dependencies
+RUN npm install
+
+# Build the application 
+RUN npm run build
+
+# Copy the rest of the application files
+COPY . .
+
+# Expose the server port (you can change this depending on your server config)
+EXPOSE 3000
+
+# Start the server
+CMD ["npm", "start"]

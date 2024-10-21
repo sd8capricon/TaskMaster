@@ -1,0 +1,12 @@
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5173:80" # Maps client port 80 inside the container to port 3000 on the host
+
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3000:3000" # Maps backend port 3000 inside the container to port 4000 on the host
